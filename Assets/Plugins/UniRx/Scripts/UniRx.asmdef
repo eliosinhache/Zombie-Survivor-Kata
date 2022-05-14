@@ -1,8 +1,6 @@
 {
-    "name": "Classes",
-    "references": [
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
-    ],
+    "name": "UniRx",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -10,6 +8,5 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "versionDefines": []
 }

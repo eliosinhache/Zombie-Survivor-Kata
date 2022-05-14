@@ -33,6 +33,7 @@ namespace Classes
             }
         }
 
+
         private void ReduceNumberOfPieces()
         {
             if (equipament.Count == equipament.Capacity) {equipament.RemoveAt(equipament.Capacity -1);}
