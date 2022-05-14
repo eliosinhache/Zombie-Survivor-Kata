@@ -4,13 +4,15 @@ using System.Runtime.CompilerServices;
 
 namespace Classes
 {
-    public class Survivor
+    public class Survivor : ISurvivorMechanics
     {
         public string name;
         public int wounds;
         public bool isAlive;
         public int actions;
         public List<Equipament> equipament = new List<Equipament>(5);
+        public float experience;
+        public string level = "Blue";
 
         public Survivor(string survivorName)
         {
@@ -61,6 +63,29 @@ namespace Classes
             }
 
             return inHand;
+        }
+
+        public void DealDamage(Zombie zombie)
+        {
+            zombie.ReceiveDamage(this);
+        }
+
+        public void ReceiveExperience(float amount)
+        {
+            experience += amount;
+            if (experience == 6)
+            {
+                level = "Yellow";
+            }
+
+            if (experience == 18)
+            {
+                level = "Orange";
+            }
+            if (experience == 42)
+            {
+                level = "Red";
+            }
         }
     }
 }

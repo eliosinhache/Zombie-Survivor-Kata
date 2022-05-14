@@ -10,6 +10,7 @@ namespace Classes
         public bool isFinish = false;
         public ReactiveProperty<bool> playerRX = new ReactiveProperty<bool>();
         public List<ReactiveProperty<bool>> survivorsList = new List<ReactiveProperty<bool>>();
+        public string level = "Blue";
 
         private void VerifySurvivors()
         {

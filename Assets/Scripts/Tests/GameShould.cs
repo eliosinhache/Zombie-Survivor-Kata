@@ -64,6 +64,11 @@ namespace Tests
             
             Assert.IsFalse(_game.isFinish);
         }
+        [Test]
+        public void StartWithBlueLevel()
+        {
+            Assert.AreEqual("Blue", _game.level);
+        }
 
     }
 }
