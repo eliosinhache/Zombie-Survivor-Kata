@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Classes;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -11,13 +12,14 @@ namespace Tests
 {
     public class SurvivorShould
     {
+        private IGame _game = Substitute.For<IGame>();
         private Survivor _survivor;
         private Equipament _equipamentBaseballBat;
         private Equipament _equipamentKatana;
         [SetUp]
         public void SetUp()
         {
-            _survivor = new Survivor("Juan");
+            _survivor = new Survivor("Juan", _game);
             _equipamentBaseballBat = new Equipament("Baseball bat");
             _equipamentKatana = new Equipament("Katana");
         }
@@ -41,6 +43,15 @@ namespace Tests
             _survivor.ReceiveWound();
             
             Assert.IsFalse(_survivor.isAlive);
+        }
+
+        [Test]
+        public void AdviceToGameThatHeIsDead()
+        {
+            _survivor.ReceiveWound();
+            _survivor.ReceiveWound();
+
+            _game.Received(1).ASurvivorDie();
         }
         
         [Test]
@@ -148,7 +159,16 @@ namespace Tests
             
             Assert.AreEqual("Red", _survivor.level);
         }
-        
+
+        [Test]
+        public void AdviceToGameThatLevelUp()
+        {
+            Zombie _zombie = new Zombie();
+            _survivor.experience = 17;
+            _survivor.DealDamage(_zombie);
+
+            _game.Received(1).ASurvivorLevelUp();
+        }
         
     }
 }

@@ -1,70 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using NSubstitute;
 using UniRx;
 
 namespace Classes
 {
-    public class Game
+    public class Game : IGame
     {
-        public List<Survivor> players = new List<Survivor>();
-        public bool isFinish = false;
-        public ReactiveProperty<bool> playerRX = new ReactiveProperty<bool>();
-        public List<ReactiveProperty<bool>> survivorsList = new List<ReactiveProperty<bool>>();
+        public List<ISurvivorMechanics> iPlayers = new List<ISurvivorMechanics>();
+        public bool isFinish;
         public string level = "Blue";
 
-        private void VerifySurvivors()
+
+        private bool IsNameExist(ISurvivorMechanics player)
         {
-            var deadSurvivors = 0;
-            // foreach (ReactiveProperty<Survivor> survivor in survivorsList)
-            // {
-            //     if (!survivor.Value.isAlive)
-            //     {
-            //         deadSurvivors += 1;
-            //     }
-            // }
-            foreach (Survivor survivor in players)
+            foreach (ISurvivorMechanics item in iPlayers)
             {
-                if (!survivor.isAlive)
-                {
-                    deadSurvivors += 1;
-                }
-            }
-
-            if (deadSurvivors == survivorsList.Count)
-            {
-                isFinish = true;
-            }
-        }
-
-        public void AddPlayer(Survivor player)
-        {
-            if (IsNameExist(player)) return;
-            players.Add(player);
-            playerRX.Value = player.isAlive;
-            survivorsList.Add(playerRX);
-            playerRX.Subscribe(x =>VerifySurvivors()) ;
-            // InitiateReactivity();
-            // playerRX.Subscribe(survivor => VerifySurvivors(survivor));
-        }
-
-        // private void InitiateReactivity()
-        // {
-        //     foreach (ReactiveProperty<Survivor> item in survivorsList)
-        //     {
-        //         item.Subscribe(player => VerifySurvivors());
-        //     }
-        // }
-
-        private bool IsNameExist(Survivor player)
-        {
-            foreach (Survivor item in players)
-            {
-                if (item.name == player.name)
+                if (item.ReturnName() == player.ReturnName())
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        public void AddSurvivor(ISurvivorMechanics survivor)
+        {
+            if (IsNameExist(survivor)) return;
+            iPlayers.Add(survivor);
+        }
+
+        public void ASurvivorDie()
+        {
+            var alives = 0;
+            foreach (ISurvivorMechanics survivor in iPlayers)
+            {
+                if (survivor.CheckIfIsAlive()) {
+                    alives += 1;
+                }
+            }
+
+            if (alives == 0)
+            {
+                isFinish = true;
+            }
+        }
+
+        public void ASurvivorLevelUp()
+        {
+            float maxExp = 0;
+            foreach (var survivor in iPlayers)
+            {
+                if (survivor.CheckExperience() <= maxExp) continue;
+                maxExp = survivor.CheckExperience();
+                level = survivor.ReturnLevel();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Classes
 {
     public class Survivor : ISurvivorMechanics
     {
+        private IGame gameManager;
         public string name;
         public int wounds;
         public bool isAlive;
@@ -14,8 +15,9 @@ namespace Classes
         public float experience;
         public string level = "Blue";
 
-        public Survivor(string survivorName)
+        public Survivor(string survivorName, IGame iGameManager)
         {
+            gameManager = iGameManager;
             name = survivorName;
             isAlive = true;
             actions = 3;
@@ -31,6 +33,7 @@ namespace Classes
                 if (wounds == 2)
                 {
                     isAlive = false;
+                    SendDeadMessageToGame();
                 }
             }
         }
@@ -44,10 +47,15 @@ namespace Classes
 
         public void Equipate(Equipament equipament, string typeOfEquipament)
         {
-            if (this.equipament.Count == this.equipament.Capacity || (typeOfEquipament == "In Hand" && EquipamentInHand() == 2) ){ return; }
+            if (CanNotEquipateNewEquipament(typeOfEquipament) ){ return; }
 
             equipament.equiped = typeOfEquipament;
             this.equipament.Add(equipament);
+        }
+
+        private bool CanNotEquipateNewEquipament(string typeOfEquipament)
+        {
+            return equipament.Count == equipament.Capacity || (typeOfEquipament == "In Hand" && EquipamentInHand() == 2);
         }
 
 
@@ -70,21 +78,75 @@ namespace Classes
             zombie.ReceiveDamage(this);
         }
 
+        public void CreateSurvivor(string name)
+        {
+            name = name;
+            isAlive = true;
+            actions = 3;
+            wounds = 0;
+        }
+
+        public void CreateSurvivor(string name, IGame iGame)
+        {
+            gameManager = iGame;
+            this.name = name;
+            isAlive = true;
+            actions = 3;
+            wounds = 0;
+        }
+
         public void ReceiveExperience(float amount)
         {
             experience += amount;
-            if (experience == 6)
-            {
-                level = "Yellow";
-            }
+            CheckLevel();
+        }
 
-            if (experience == 18)
+        public bool CheckIfIsAlive()
+        {
+            return isAlive;
+        }
+
+        public string ReturnName()
+        {
+            return name;
+        }
+
+        public void SendDeadMessageToGame()
+        {
+            gameManager.ASurvivorDie();
+        }
+
+        public void SendLevelUpToGame()
+        {
+            gameManager.ASurvivorLevelUp();
+        }
+
+        public float CheckExperience()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ReturnLevel()
+        {
+            return level;
+        }
+
+        private void CheckLevel()
+        {
+            switch (experience)
             {
-                level = "Orange";
-            }
-            if (experience == 42)
-            {
-                level = "Red";
+                case 6:
+                    level = "Yellow";
+                    SendLevelUpToGame();
+                    break;
+                case 18:
+                        level = "Orange";
+                        SendLevelUpToGame();
+                        break;
+                case 42:
+                        level = "Red";
+                        SendLevelUpToGame();
+                        break;
             }
         }
     }
