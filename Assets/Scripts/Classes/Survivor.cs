@@ -30,10 +30,11 @@ namespace Classes
             { 
                 wounds += 1;
                 ReduceNumberOfPieces();
+                gameManager.ASurvivorReceiveWound(this);
                 if (wounds == 2)
                 {
                     isAlive = false;
-                    SendDeadMessageToGame();
+                    gameManager.ASurvivorDie(this);
                 }
             }
         }
@@ -51,6 +52,8 @@ namespace Classes
 
             equipament.equiped = typeOfEquipament;
             this.equipament.Add(equipament);
+
+            gameManager.ASurvivorEquipatedAWeapon(this, equipament, typeOfEquipament);
         }
 
         private bool CanNotEquipateNewEquipament(string typeOfEquipament)
@@ -73,26 +76,9 @@ namespace Classes
             return inHand;
         }
 
-        public void DealDamage(Zombie zombie)
+        public void DealDamage(IZombie zombie)
         {
             zombie.ReceiveDamage(this);
-        }
-
-        public void CreateSurvivor(string name)
-        {
-            name = name;
-            isAlive = true;
-            actions = 3;
-            wounds = 0;
-        }
-
-        public void CreateSurvivor(string name, IGame iGame)
-        {
-            gameManager = iGame;
-            this.name = name;
-            isAlive = true;
-            actions = 3;
-            wounds = 0;
         }
 
         public void ReceiveExperience(float amount)
@@ -111,19 +97,9 @@ namespace Classes
             return name;
         }
 
-        public void SendDeadMessageToGame()
-        {
-            gameManager.ASurvivorDie();
-        }
-
-        public void SendLevelUpToGame()
-        {
-            gameManager.ASurvivorLevelUp();
-        }
-
         public float CheckExperience()
         {
-            throw new NotImplementedException();
+            return experience;
         }
 
         public string ReturnLevel()
@@ -137,15 +113,15 @@ namespace Classes
             {
                 case 6:
                     level = "Yellow";
-                    SendLevelUpToGame();
+                    gameManager.ASurvivorLevelUp();
                     break;
                 case 18:
                         level = "Orange";
-                        SendLevelUpToGame();
+                        gameManager.ASurvivorLevelUp();
                         break;
                 case 42:
                         level = "Red";
-                        SendLevelUpToGame();
+                        gameManager.ASurvivorLevelUp();
                         break;
             }
         }

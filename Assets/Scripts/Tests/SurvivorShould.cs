@@ -1,21 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Classes;
+﻿using Classes;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using UnityEngine.XR.WSA;
 
 namespace Tests
 {
     public class SurvivorShould
     {
-        private IGame _game = Substitute.For<IGame>();
         private Survivor _survivor;
         private Equipament _equipamentBaseballBat;
         private Equipament _equipamentKatana;
+        private IGame _game = Substitute.For<IGame>();
+        private IZombie _zombie = Substitute.For<IZombie>();
         [SetUp]
         public void SetUp()
         {
@@ -46,12 +41,12 @@ namespace Tests
         }
 
         [Test]
-        public void AdviceToGameThatHeIsDead()
+        public void NotifyToGameThatHeIsDead()
         {
             _survivor.ReceiveWound();
             _survivor.ReceiveWound();
 
-            _game.Received(1).ASurvivorDie();
+            _game.Received(1).ASurvivorDie(_survivor);
         }
         
         [Test]
@@ -117,22 +112,17 @@ namespace Tests
         [Test]
         public void WinExperienceWhenKillAZombie()
         {
-            Zombie _zombie = Substitute.For<Zombie>();
-            // _zombie.ReceiveDamage2().Returns(true);
-
-            _survivor.DealDamage(_zombie);
+            _survivor.experience = 3;
+            _zombie.ReceiveDamage(_survivor);
             
-            Assert.AreEqual(1, _survivor.experience);
+            Assert.AreEqual(4, _survivor.experience);
         }
         
         [Test]
         public void LevelUpToYellowWhenHaveSixExperience()
         {
-            Zombie _zombie = new Zombie();
             _survivor.experience = 5;
-            // _zombie.ReceiveDamage2().Returns(true);
-
-            _survivor.DealDamage(_zombie);
+            _survivor.ReceiveExperience(1);
             
             Assert.AreEqual("Yellow", _survivor.level);
         }
@@ -140,32 +130,27 @@ namespace Tests
         [Test]
         public void LevelUpToOrangeWhenHaveEighteenExperience()
         {
-            Zombie _zombie = new Zombie();
             _survivor.experience = 17;
-            // _zombie.ReceiveDamage2().Returns(true);
 
-            _survivor.DealDamage(_zombie);
+            _survivor.ReceiveExperience(1);
             
             Assert.AreEqual("Orange", _survivor.level);
         }
         [Test]
         public void LevelUpToRedWhenHaveFortyTwoExperience()
         {
-            Zombie _zombie = new Zombie();
             _survivor.experience = 41;
-            // _zombie.ReceiveDamage2().Returns(true);
 
-            _survivor.DealDamage(_zombie);
+            _survivor.ReceiveExperience(1);
             
             Assert.AreEqual("Red", _survivor.level);
         }
 
         [Test]
-        public void AdviceToGameThatLevelUp()
+        public void NotifyToGameThatLevelUp()
         {
-            Zombie _zombie = new Zombie();
             _survivor.experience = 17;
-            _survivor.DealDamage(_zombie);
+            _survivor.ReceiveExperience(1);
 
             _game.Received(1).ASurvivorLevelUp();
         }

@@ -1,6 +1,6 @@
 ﻿namespace Classes
 {
-    public class Zombie
+    public class Zombie : IZombie
     {
         public void ReceiveDamage(ISurvivorMechanics entity)
         {

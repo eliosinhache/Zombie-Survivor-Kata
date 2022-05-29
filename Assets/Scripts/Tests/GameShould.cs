@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
 using Classes;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -10,15 +12,19 @@ namespace Tests
     public class GameShould
     {
         private Game _game;
-        private ISurvivorMechanics _survivor01 = Substitute.For<ISurvivorMechanics>() ;
-        private ISurvivorMechanics _survivor02 = Substitute.For<ISurvivorMechanics>() ;
+        private ISurvivorMechanics _survivor01;
+        private ISurvivorMechanics _survivor02;
         
         [SetUp]
         public void Setup()
         {
              _game = new Game();
-             _survivor01.CreateSurvivor("Juan", _game);
-             _survivor02.CreateSurvivor("Pedro", _game);
+             _survivor01 = Substitute.For<ISurvivorMechanics>() ;
+             _survivor02 = Substitute.For<ISurvivorMechanics>() ;
+             // _survivor01 = new Survivor("Juan", _game);
+             // _survivor02 = new Survivor("Pedro", _game);
+             // _survivor01.CreateSurvivor("Juan", _game);
+             // _survivor02.CreateSurvivor("Pedro", _game);
         }
         
         [Test]
@@ -51,7 +57,7 @@ namespace Tests
             _survivor01.CheckIfIsAlive().Returns(false);
             _game.AddSurvivor(_survivor01);
             
-            _game.ASurvivorDie();
+            _game.ASurvivorDie(_survivor01);
             
             Assert.IsTrue(_game.isFinish);
         }
@@ -84,6 +90,48 @@ namespace Tests
             _game.ASurvivorLevelUp();
             
             Assert.AreEqual("Red", _game.level);
+        }
+
+        [Test]
+        public void RecordTheGameStartTime()
+        {
+            
+            Assert.AreEqual("12:35", _game.GameStartTime());
+        }
+
+        [Test]
+        public void RecordWhenAPlayerJoinTheGame()
+        {
+            _game.AddSurvivor(_survivor01);
+            Assert.IsTrue(_game.history.Contains("New player added: " + _survivor01.ReturnName()));
+        }
+
+        [Test]
+        public void RecordWhenAPlayerAcquiresAPieceOfEquipament()
+        {
+            Equipament equipament = new Equipament("SomeWeapon");
+            _game.AddSurvivor(_survivor01);
+            
+            
+            _game.ASurvivorEquipatedAWeapon(_survivor01, equipament, "In Reserve");
+            
+            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " equipped " + equipament.name + " like In Reserve"));
+        }
+        
+        [Test]
+        public void RecordWhenAPlayerIsWounded()
+        {
+            _game.ASurvivorReceiveWound(_survivor01);
+            
+            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " receive wound"));
+        }
+        
+        [Test]
+        public void RecordWhenASurvivorDie()
+        {
+            _game.ASurvivorDie(_survivor01);
+            
+            Assert.IsTrue(_game.history.Contains("The survivor " + _survivor01.ReturnName() + " die"));
         }
 
     }
