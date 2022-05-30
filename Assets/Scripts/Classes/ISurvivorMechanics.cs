@@ -9,6 +9,6 @@ namespace Classes
         void ReceiveWound();
         float CheckExperience();
         string ReturnLevel();
-        void Equipate(Equipament equipment, string typeOfEquipment);
+        void Equipate(Equipment equipment, string typeOfEquipment);
     }
 }

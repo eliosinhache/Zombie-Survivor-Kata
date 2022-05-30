@@ -87,7 +87,7 @@ namespace Tests
             _game.AddSurvivor(_survivor01);
             _game.AddSurvivor(_survivor02);
             
-            _game.ASurvivorLevelUp();
+            _game.ASurvivorLevelUp(_survivor01);
             
             Assert.AreEqual("Red", _game.level);
         }
@@ -109,13 +109,13 @@ namespace Tests
         [Test]
         public void RecordWhenAPlayerAcquiresAPieceOfEquipament()
         {
-            Equipament equipament = new Equipament("SomeWeapon");
+            Equipment equipment = new Equipment("SomeWeapon");
             _game.AddSurvivor(_survivor01);
             
             
-            _game.ASurvivorEquipatedAWeapon(_survivor01, equipament, "In Reserve");
+            _game.ASurvivorEquippedAWeapon(_survivor01, equipment, "In Reserve");
             
-            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " equipped " + equipament.name + " like In Reserve"));
+            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " equipped " + equipment.name + " like In Reserve"));
         }
         
         [Test]
@@ -134,5 +134,56 @@ namespace Tests
             Assert.IsTrue(_game.history.Contains("The survivor " + _survivor01.ReturnName() + " die"));
         }
 
+        [Test]
+        public void RecordWhenASurvivorLevelUp()
+        {
+            _game.ASurvivorLevelUp(_survivor01);
+            
+            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " Level Up!"));
+        }
+
+        [Test]
+        public void RecordGameLevelChangeWhenASurvivorLevelUp()
+        {
+            _survivor01.CheckExperience().Returns(19);
+            _survivor01.ReturnLevel().Returns("Orange");
+            _game.AddSurvivor(_survivor01);
+            _game.ASurvivorLevelUp(_survivor01);
+            
+            Assert.IsTrue(_game.history.Contains("Game level has change"));
+        }
+        [Test]
+        public void RecordGameLevelChangeWhenASurvivorDie()
+        {
+            _survivor01.CheckExperience().Returns(19);
+            _survivor01.ReturnLevel().Returns("Orange");
+            _survivor01.CheckIfIsAlive().Returns(true);
+            _survivor02.CheckExperience().Returns(29);
+            _survivor02.ReturnLevel().Returns("Red");
+            _survivor02.CheckIfIsAlive().Returns(false);
+            _game.AddSurvivor(_survivor01);
+            _game.AddSurvivor(_survivor02);
+            
+            _game.ASurvivorDie(_survivor02);
+            
+            Assert.IsTrue(_game.history.Contains("Game level has change"));
+        }
+        [Test]
+        public void RecordGameOverWhenAllSurvivorDie()
+        {
+            _survivor01.CheckExperience().Returns(19);
+            _survivor01.ReturnLevel().Returns("Orange");
+            _survivor01.CheckIfIsAlive().Returns(false);
+            _survivor02.CheckExperience().Returns(29);
+            _survivor02.ReturnLevel().Returns("Red");
+            _survivor02.CheckIfIsAlive().Returns(false);
+            _game.AddSurvivor(_survivor01);
+            _game.AddSurvivor(_survivor02);
+            
+            _game.ASurvivorDie(_survivor02);
+            _game.ASurvivorDie(_survivor01);
+            
+            Assert.IsTrue(_game.history.Contains("Game Over: all survivor die"));
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace Classes
         public int wounds;
         public bool isAlive;
         public int actions;
-        public List<Equipament> equipament = new List<Equipament>(5);
+        public List<Equipment> equipament = new List<Equipment>(5);
         public float experience;
         public string level = "Blue";
 
@@ -46,26 +46,26 @@ namespace Classes
             equipament.Capacity -= 1;
         }
 
-        public void Equipate(Equipament equipament, string typeOfEquipament)
+        public void Equipate(Equipment equipment, string typeOfEquipment)
         {
-            if (CanNotEquipateNewEquipament(typeOfEquipament) ){ return; }
+            if (CanNotEquipateNewEquipment(typeOfEquipment) ){ return; }
 
-            equipament.equiped = typeOfEquipament;
-            this.equipament.Add(equipament);
+            equipment.equiped = typeOfEquipment;
+            this.equipament.Add(equipment);
 
-            gameManager.ASurvivorEquipatedAWeapon(this, equipament, typeOfEquipament);
+            gameManager.ASurvivorEquippedAWeapon(this, equipment, typeOfEquipment);
         }
 
-        private bool CanNotEquipateNewEquipament(string typeOfEquipament)
+        private bool CanNotEquipateNewEquipment(string typeOfEquipment)
         {
-            return equipament.Count == equipament.Capacity || (typeOfEquipament == "In Hand" && EquipamentInHand() == 2);
+            return equipament.Count == equipament.Capacity || (typeOfEquipment == "In Hand" && EquipmentInHand() == 2);
         }
 
 
-        public int EquipamentInHand()
+        public int EquipmentInHand()
         {
             int inHand = 0;
-            foreach (Equipament item in equipament)
+            foreach (Equipment item in equipament)
             {
                 if (item.equiped == "In Hand")
                 {
@@ -113,15 +113,15 @@ namespace Classes
             {
                 case 6:
                     level = "Yellow";
-                    gameManager.ASurvivorLevelUp();
+                    gameManager.ASurvivorLevelUp(this);
                     break;
                 case 18:
                         level = "Orange";
-                        gameManager.ASurvivorLevelUp();
+                        gameManager.ASurvivorLevelUp(this);
                         break;
                 case 42:
                         level = "Red";
-                        gameManager.ASurvivorLevelUp();
+                        gameManager.ASurvivorLevelUp(this);
                         break;
             }
         }

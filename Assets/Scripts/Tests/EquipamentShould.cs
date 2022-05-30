@@ -12,9 +12,9 @@ namespace Tests
         [Test]
         public void HaveName()
         {
-            Equipament _equipament = new Equipament("Baseball bat");
+            Equipment equipment = new Equipment("Baseball bat");
             
-            Assert.AreEqual("Baseball bat", _equipament.name);
+            Assert.AreEqual("Baseball bat", equipment.name);
         }
         
     }

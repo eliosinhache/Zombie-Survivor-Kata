@@ -1,5 +1,6 @@
 ﻿using Classes;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 
 namespace Tests
@@ -7,16 +8,16 @@ namespace Tests
     public class SurvivorShould
     {
         private Survivor _survivor;
-        private Equipament _equipamentBaseballBat;
-        private Equipament _equipamentKatana;
+        private Equipment _equipmentBaseballBat;
+        private Equipment _equipmentKatana;
         private IGame _game = Substitute.For<IGame>();
         private IZombie _zombie = Substitute.For<IZombie>();
         [SetUp]
         public void SetUp()
         {
             _survivor = new Survivor("Juan", _game);
-            _equipamentBaseballBat = new Equipament("Baseball bat");
-            _equipamentKatana = new Equipament("Katana");
+            _equipmentBaseballBat = new Equipment("Baseball bat");
+            _equipmentKatana = new Equipment("Katana");
         }
         
         [Test]
@@ -58,25 +59,25 @@ namespace Tests
         [Test]
         public void HaveTwoEquipamentInHand()
         {
-            _survivor.Equipate(_equipamentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
+            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
             
             
-            Assert.AreEqual(2, _survivor.EquipamentInHand());
+            Assert.AreEqual(2, _survivor.EquipmentInHand());
         }
         
         [Test]
         public void Have5EquipamentInReserve()
         {
-            _survivor.Equipate(_equipamentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
+            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
             
             Assert.AreEqual(5, _survivor.equipament.Count);
         }
@@ -84,15 +85,15 @@ namespace Tests
         [Test]
         public void HaveOneLessPiecesWhenReceiveWound()
         {
-            _survivor.Equipate(_equipamentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Hand");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
             
             _survivor.ReceiveWound();
             
-            _survivor.Equipate(_equipamentKatana, "In Reserve");
+            _survivor.Equipate(_equipmentKatana, "In Reserve");
             
             Assert.AreEqual(4, _survivor.equipament.Count);
         }
@@ -113,7 +114,9 @@ namespace Tests
         public void WinExperienceWhenKillAZombie()
         {
             _survivor.experience = 3;
-            _zombie.ReceiveDamage(_survivor);
+            _survivor.DealDamage(_zombie);
+            
+            // _zombie.ReceiveDamage(_survivor);
             
             Assert.AreEqual(4, _survivor.experience);
         }
@@ -152,7 +155,7 @@ namespace Tests
             _survivor.experience = 17;
             _survivor.ReceiveExperience(1);
 
-            _game.Received(1).ASurvivorLevelUp();
+            _game.Received(1).ASurvivorLevelUp(_survivor);
         }
         
     }

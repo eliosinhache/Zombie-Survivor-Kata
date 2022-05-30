@@ -4,8 +4,8 @@
     {
         void AddSurvivor(ISurvivorMechanics survivor);
         void ASurvivorDie(ISurvivorMechanics survivor);
-        void ASurvivorLevelUp();
-        void ASurvivorEquipatedAWeapon(ISurvivorMechanics survivor, Equipament equipament, string typeOfEquipament);
+        void ASurvivorLevelUp(ISurvivorMechanics survivor);
+        void ASurvivorEquippedAWeapon(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment);
         void ASurvivorReceiveWound(ISurvivorMechanics survivor);
     }
 }

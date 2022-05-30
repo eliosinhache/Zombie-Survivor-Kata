@@ -1,11 +1,11 @@
 ﻿namespace Classes
 {
-    public class Equipament
+    public class Equipment
     {
         public string name;
         public string equiped;
 
-        public Equipament(string equipamentName)
+        public Equipment(string equipamentName)
         {
             name = equipamentName;
             equiped = "In Reserve";

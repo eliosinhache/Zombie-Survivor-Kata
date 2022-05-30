@@ -4,8 +4,12 @@
     {
         public void ReceiveDamage(ISurvivorMechanics entity)
         {
-            entity.ReceiveExperience(1);
+            GiveExperienceToSurvivor(entity);
         }
 
+        public void GiveExperienceToSurvivor(ISurvivorMechanics entity)
+        {
+            entity.ReceiveExperience(1);
+        }
     }
 }

@@ -34,18 +34,13 @@ namespace Classes
 
         private void AddNewPlayerHistory(ISurvivorMechanics survivor)
         {
-            history.Add("New player added: " + survivor.ReturnName());
+            RecordHistory("New player added: " + survivor.ReturnName());
         }
 
         public void ASurvivorDie(ISurvivorMechanics survivor)
         {
-            RecordASurvivorDie(survivor);
+            RecordHistory("The survivor " + survivor.ReturnName() + " die");
             CheckIfAllSurvivorDie();
-        }
-
-        private void RecordASurvivorDie(ISurvivorMechanics survivor)
-        {
-            history.Add("The survivor " + survivor.ReturnName() + " die");
         }
 
         private void CheckIfAllSurvivorDie()
@@ -53,42 +48,65 @@ namespace Classes
             var alives = 0;
             foreach (ISurvivorMechanics survivor in iPlayers)
             {
-                if (survivor.CheckIfIsAlive())
+                if (!survivor.CheckIfIsAlive()) continue;
+                if (level != survivor.ReturnLevel())
                 {
-                    alives += 1;
+                    RecordGameLevelChanged();
                 }
+                alives += 1;
             }
 
             if (alives == 0)
             {
                 isFinish = true;
+                RecordHistory("Game Over: all survivor die");
             }
         }
 
-        public void ASurvivorLevelUp()
+        public void ASurvivorLevelUp(ISurvivorMechanics survivor)
+        {
+            RecordHistory(survivor.ReturnName() + " Level Up!");
+            CheckMaxLevel();
+        }
+
+        private void CheckMaxLevel()
         {
             float maxExp = 0;
             foreach (ISurvivorMechanics survivor in iPlayers)
             {
                 if (survivor.CheckExperience() <= maxExp) continue;
                 maxExp = survivor.CheckExperience();
-                level = survivor.ReturnLevel();
+                if (level != survivor.ReturnLevel())
+                {
+                    level = survivor.ReturnLevel();
+                    RecordGameLevelChanged();
+                }
             }
         }
 
-        public void ASurvivorEquipatedAWeapon(ISurvivorMechanics survivor, Equipament equipament, string typeOfEquipament)
+        private void RecordGameLevelChanged()
         {
-            AddPlayerEquipatedHistory(survivor, equipament, typeOfEquipament);
+            history.Add("Game level has change");
+        }
+
+        public void ASurvivorEquippedAWeapon(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment)
+        {
+            AddPlayerEquipatedHistory(survivor, equipment, typeOfEquipment);
+        }
+
+        private void RecordHistory(string message)
+        {
+            history.Add(message);
         }
 
         public void ASurvivorReceiveWound(ISurvivorMechanics survivor)
         {
-            history.Add(survivor.ReturnName() + " receive wound");
+            RecordHistory(survivor.ReturnName() + " receive wound");
         }
 
-        private void AddPlayerEquipatedHistory(ISurvivorMechanics survivor, Equipament equipament, string typeOfEquipament)
+        private void AddPlayerEquipatedHistory(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment)
         {
-            history.Add(survivor.ReturnName() + " equipped " + equipament.name + " like " + typeOfEquipament);
+            RecordHistory(survivor.ReturnName() + " equipped " + equipment.name + " like " + typeOfEquipment);
         }
 
 
