@@ -1,9 +1,9 @@
 ﻿
 namespace Classes
 {
-    public interface ISurvivorMechanics
+    public interface ISurvivor
     {
-        void ReceiveExperience(float amount);
+        void GainExperience(float amount);
         bool CheckIfIsAlive();
         string ReturnName();
         void ReceiveWound();

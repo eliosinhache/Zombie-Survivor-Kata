@@ -12,15 +12,15 @@ namespace Tests
     public class GameShould
     {
         private Game _game;
-        private ISurvivorMechanics _survivor01;
-        private ISurvivorMechanics _survivor02;
+        private ISurvivor _survivor01;
+        private ISurvivor _survivor02;
         
         [SetUp]
         public void Setup()
         {
              _game = new Game();
-             _survivor01 = Substitute.For<ISurvivorMechanics>() ;
-             _survivor02 = Substitute.For<ISurvivorMechanics>() ;
+             _survivor01 = Substitute.For<ISurvivor>() ;
+             _survivor02 = Substitute.For<ISurvivor>() ;
              // _survivor01 = new Survivor("Juan", _game);
              // _survivor02 = new Survivor("Pedro", _game);
              // _survivor01.CreateSurvivor("Juan", _game);
@@ -123,7 +123,7 @@ namespace Tests
         {
             _game.ASurvivorReceiveWound(_survivor01);
             
-            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " receive wound"));
+            Assert.IsTrue(_game.history.Contains(_survivor01.ReturnName() + " received wound"));
         }
         
         [Test]

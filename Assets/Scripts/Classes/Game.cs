@@ -7,15 +7,16 @@ namespace Classes
 {
     public class Game : IGame
     {
-        public List<ISurvivorMechanics> iPlayers = new List<ISurvivorMechanics>();
+        public List<ISurvivor> iPlayers = new List<ISurvivor>();
+        
         public bool isFinish;
         public string level = "Blue";
         public List<string> history = new List<string>();
 
 
-        private bool IsNameExist(ISurvivorMechanics player)
+        private bool IsNameExist(ISurvivor player)
         {
-            foreach (ISurvivorMechanics item in iPlayers)
+            foreach (ISurvivor item in iPlayers)
             {
                 if (item.ReturnName() == player.ReturnName())
                 {
@@ -25,19 +26,20 @@ namespace Classes
             return false;
         }
 
-        public void AddSurvivor(ISurvivorMechanics survivor)
+        public void AddSurvivor(ISurvivor survivor)
         {
             if (IsNameExist(survivor)) return;
             iPlayers.Add(survivor);
             AddNewPlayerHistory(survivor);
+            
         }
 
-        private void AddNewPlayerHistory(ISurvivorMechanics survivor)
+        private void AddNewPlayerHistory(ISurvivor survivor)
         {
             RecordHistory("New player added: " + survivor.ReturnName());
         }
 
-        public void ASurvivorDie(ISurvivorMechanics survivor)
+        public void ASurvivorDie(ISurvivor survivor)
         {
             RecordHistory("The survivor " + survivor.ReturnName() + " die");
             CheckIfAllSurvivorDie();
@@ -46,7 +48,7 @@ namespace Classes
         private void CheckIfAllSurvivorDie()
         {
             var alives = 0;
-            foreach (ISurvivorMechanics survivor in iPlayers)
+            foreach (ISurvivor survivor in iPlayers)
             {
                 if (!survivor.CheckIfIsAlive()) continue;
                 if (level != survivor.ReturnLevel())
@@ -63,7 +65,7 @@ namespace Classes
             }
         }
 
-        public void ASurvivorLevelUp(ISurvivorMechanics survivor)
+        public void ASurvivorLevelUp(ISurvivor survivor)
         {
             RecordHistory(survivor.ReturnName() + " Level Up!");
             CheckMaxLevel();
@@ -72,7 +74,7 @@ namespace Classes
         private void CheckMaxLevel()
         {
             float maxExp = 0;
-            foreach (ISurvivorMechanics survivor in iPlayers)
+            foreach (ISurvivor survivor in iPlayers)
             {
                 if (survivor.CheckExperience() <= maxExp) continue;
                 maxExp = survivor.CheckExperience();
@@ -89,7 +91,7 @@ namespace Classes
             history.Add("Game level has change");
         }
 
-        public void ASurvivorEquippedAWeapon(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment)
+        public void ASurvivorEquippedAWeapon(ISurvivor survivor, Equipment equipment, string typeOfEquipment)
         {
             AddPlayerEquipatedHistory(survivor, equipment, typeOfEquipment);
         }
@@ -99,12 +101,12 @@ namespace Classes
             history.Add(message);
         }
 
-        public void ASurvivorReceiveWound(ISurvivorMechanics survivor)
+        public void ASurvivorReceiveWound(ISurvivor survivor)
         {
-            RecordHistory(survivor.ReturnName() + " receive wound");
+            RecordHistory(survivor.ReturnName() + " received wound");
         }
 
-        private void AddPlayerEquipatedHistory(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment)
+        private void AddPlayerEquipatedHistory(ISurvivor survivor, Equipment equipment, string typeOfEquipment)
         {
             RecordHistory(survivor.ReturnName() + " equipped " + equipment.name + " like " + typeOfEquipment);
         }

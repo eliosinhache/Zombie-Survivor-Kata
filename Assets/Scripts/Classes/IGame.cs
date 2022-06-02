@@ -2,10 +2,10 @@
 {
     public interface IGame
     {
-        void AddSurvivor(ISurvivorMechanics survivor);
-        void ASurvivorDie(ISurvivorMechanics survivor);
-        void ASurvivorLevelUp(ISurvivorMechanics survivor);
-        void ASurvivorEquippedAWeapon(ISurvivorMechanics survivor, Equipment equipment, string typeOfEquipment);
-        void ASurvivorReceiveWound(ISurvivorMechanics survivor);
+        void AddSurvivor(ISurvivor survivor);
+        void ASurvivorDie(ISurvivor survivor);
+        void ASurvivorLevelUp(ISurvivor survivor);
+        void ASurvivorEquippedAWeapon(ISurvivor survivor, Equipment equipment, string typeOfEquipment);
+        void ASurvivorReceiveWound(ISurvivor survivor);
     }
 }

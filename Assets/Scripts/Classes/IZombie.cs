@@ -2,7 +2,7 @@
 {
     public interface IZombie
     {
-        void ReceiveDamage(ISurvivorMechanics entity);
-        void GiveExperienceToSurvivor(ISurvivorMechanics entity);
+        void ReceiveDamage(ISurvivor entity);
+        void GiveExperienceToKiller(ISurvivor entity);
     }
 }

@@ -2,14 +2,14 @@
 {
     public class Zombie : IZombie
     {
-        public void ReceiveDamage(ISurvivorMechanics entity)
+        public void ReceiveDamage(ISurvivor entity)
         {
-            GiveExperienceToSurvivor(entity);
+            GiveExperienceToKiller(entity);
         }
 
-        public void GiveExperienceToSurvivor(ISurvivorMechanics entity)
+        public void GiveExperienceToKiller(ISurvivor entity)
         {
-            entity.ReceiveExperience(1);
+            entity.GainExperience(1);
         }
     }
 }

@@ -111,21 +111,26 @@ namespace Tests
         }
         
         [Test]
-        public void WinExperienceWhenKillAZombie()
+        public void BeAbleToDamageAZombie()
         {
-            _survivor.experience = 3;
             _survivor.DealDamage(_zombie);
+            _zombie.Received(1).ReceiveDamage(_survivor);
+        }
+        
+        [Test]
+        public void BeAbleToGainExperience()
+        {
+            _survivor.experience = 4;
+            _survivor.GainExperience(1);
             
-            // _zombie.ReceiveDamage(_survivor);
-            
-            Assert.AreEqual(4, _survivor.experience);
+            Assert.AreEqual(5, _survivor.experience);
         }
         
         [Test]
         public void LevelUpToYellowWhenHaveSixExperience()
         {
             _survivor.experience = 5;
-            _survivor.ReceiveExperience(1);
+            _survivor.GainExperience(1);
             
             Assert.AreEqual("Yellow", _survivor.level);
         }
@@ -135,7 +140,7 @@ namespace Tests
         {
             _survivor.experience = 17;
 
-            _survivor.ReceiveExperience(1);
+            _survivor.GainExperience(1);
             
             Assert.AreEqual("Orange", _survivor.level);
         }
@@ -144,7 +149,7 @@ namespace Tests
         {
             _survivor.experience = 41;
 
-            _survivor.ReceiveExperience(1);
+            _survivor.GainExperience(1);
             
             Assert.AreEqual("Red", _survivor.level);
         }
@@ -153,7 +158,7 @@ namespace Tests
         public void NotifyToGameThatLevelUp()
         {
             _survivor.experience = 17;
-            _survivor.ReceiveExperience(1);
+            _survivor.GainExperience(1);
 
             _game.Received(1).ASurvivorLevelUp(_survivor);
         }
