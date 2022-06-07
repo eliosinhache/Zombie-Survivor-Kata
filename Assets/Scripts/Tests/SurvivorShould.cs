@@ -79,7 +79,7 @@ namespace Tests
             _survivor.Equipate(_equipmentKatana, "In Reserve");
             _survivor.Equipate(_equipmentKatana, "In Hand");
             
-            Assert.AreEqual(5, _survivor.equipament.Count);
+            Assert.AreEqual(5, _survivor.equipment.Count);
         }
         
         [Test]
@@ -95,7 +95,7 @@ namespace Tests
             
             _survivor.Equipate(_equipmentKatana, "In Reserve");
             
-            Assert.AreEqual(4, _survivor.equipament.Count);
+            Assert.AreEqual(4, _survivor.equipment.Count);
         }
         
         [Test]

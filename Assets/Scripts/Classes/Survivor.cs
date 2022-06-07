@@ -11,7 +11,7 @@ namespace Classes
         public int wounds;
         public bool isAlive;
         public int actions;
-        public List<Equipment> equipament = new List<Equipment>(5);
+        public List<Equipment> equipment = new List<Equipment>(5);
         public float experience;
         public string level = "Blue";
 
@@ -42,8 +42,8 @@ namespace Classes
 
         private void ReduceNumberOfPieces()
         {
-            if (equipament.Count == equipament.Capacity) {equipament.RemoveAt(equipament.Capacity -1);}
-            equipament.Capacity -= 1;
+            if (equipment.Count == equipment.Capacity) {equipment.RemoveAt(equipment.Capacity -1);}
+            equipment.Capacity -= 1;
         }
 
         public void Equipate(Equipment equipment, string typeOfEquipment)
@@ -51,21 +51,21 @@ namespace Classes
             if (CanNotEquipateNewEquipment(typeOfEquipment) ){ return; }
 
             equipment.equiped = typeOfEquipment;
-            this.equipament.Add(equipment);
+            this.equipment.Add(equipment);
 
             _game.ASurvivorEquippedAWeapon(this, equipment, typeOfEquipment);
         }
 
         private bool CanNotEquipateNewEquipment(string typeOfEquipment)
         {
-            return equipament.Count == equipament.Capacity || (typeOfEquipment == "In Hand" && EquipmentInHand() == 2);
+            return equipment.Count == equipment.Capacity || (typeOfEquipment == "In Hand" && EquipmentInHand() == 2);
         }
 
 
         public int EquipmentInHand()
         {
             int inHand = 0;
-            foreach (Equipment item in equipament)
+            foreach (Equipment item in equipment)
             {
                 if (item.equiped == "In Hand")
                 {
