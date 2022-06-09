@@ -25,12 +25,13 @@ namespace Classes
             Skill skill2 = new Skill();
             skill2.description = "+1 Die";
             skill2.lvlToUnlock = "Orange";
+            skill2.minExperienceNeeded = 18;
             AddNewSkill(skill2);
             
             Skill skill3 = new Skill();
-            skill3.description = "+1 Die";
-            skill3.lvlToUnlock = "Orange";
             skill3.description = "+1 Free Move Action";
+            skill3.lvlToUnlock = "Orange";
+            skill3.minExperienceNeeded = 18;
             AddNewSkill(skill3);
 
             Skill skill4 = new Skill();
@@ -85,8 +86,8 @@ namespace Classes
             if (reco != null)
             {
                 if (reco.skill.isUnlock) {count++;}
-                count += ImprimirEntre (reco.left, count);
-                count += ImprimirEntre (reco.right, count);
+                count = ImprimirEntre (reco.left, count);
+                count = ImprimirEntre (reco.right, count);
             }
 
             return count;
@@ -94,7 +95,7 @@ namespace Classes
 
         public int ImprimirEntre (int count)
         {
-            count += ImprimirEntre (raiz, count);
+            count = ImprimirEntre (raiz, count);
             Console.WriteLine();
             return count;
         }
@@ -102,11 +103,11 @@ namespace Classes
         public int UnlockedSkills()
         {
             int count = 0;
-            count += ImprimirEntre(count);
+            count = ImprimirEntre(count);
             return count;
         }
 
-        public int avaibleSkills(string lvl)
+        public int EnabledSkills(string lvl)
         {
             int count = 0;
             count += SearchCantOfSkillsPerLevel(count, lvl);
@@ -117,6 +118,51 @@ namespace Classes
         {
             int count = CantOfLockedSkills();
             return count;
+        }
+
+        public void UnlockSkill(Skill unlockSkill, int experience)
+        {
+            if (unlockSkill.minExperienceNeeded > experience) { return;}
+            if (IsExperienceEnoughToUnlockNewSkill(experience)) { UnlockSkill(unlockSkill, raiz);}
+            
+        }
+
+        private bool IsExperienceEnoughToUnlockNewSkill(int experience)
+        {
+            if (experience <= 7)
+            {
+                return UnlockedSkills() < 1;
+            }
+            if (experience<= 18)
+            {
+                return UnlockedSkills() < 2;
+            }
+            if (experience <= 60) {return UnlockedSkills() < 3;}
+
+            if (experience >= 61 && experience < 86)
+            {
+                return UnlockedSkills() < 4;
+            }
+            if (experience >= 86 && experience < 129)
+            {
+                return UnlockedSkills() < 5;
+            }
+
+            return UnlockedSkills() < 6;
+        }
+
+        private void UnlockSkill(Skill unlockSkill, Nodo nodo)
+        {
+            if (nodo == null) return;
+            if (nodo.skill.description == unlockSkill.description && nodo.skill.lvlToUnlock == unlockSkill.lvlToUnlock)
+            {
+                nodo.skill.isUnlock = true;
+            }
+            else
+            {
+                UnlockSkill(unlockSkill, nodo.right);
+                UnlockSkill(unlockSkill, nodo.left);
+            }
         }
 
         private int CantOfLockedSkills()
@@ -131,7 +177,6 @@ namespace Classes
                 {
                     count++;
                 }
-
                 count = CantOfLockedSkills(count, recc.left);
                 count = CantOfLockedSkills(count, recc.right);
             }

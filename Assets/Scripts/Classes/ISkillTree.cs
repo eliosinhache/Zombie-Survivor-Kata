@@ -3,7 +3,8 @@
     public interface ISkillTree
     {
         int UnlockedSkills();
-        int avaibleSkills(string lvl);
+        int EnabledSkills(string lvl);
         int LockedSkills();
+        void UnlockSkill(Skill oneMoreAction, int experience);
     }
 }
