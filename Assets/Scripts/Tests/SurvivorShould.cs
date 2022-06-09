@@ -8,6 +8,7 @@ namespace Tests
     public class SurvivorShould
     {
         private Survivor _survivor;
+        private ISkillTree _skillTree = Substitute.For<ISkillTree>();
         private Equipment _equipmentBaseballBat;
         private Equipment _equipmentKatana;
         private IGame _game = Substitute.For<IGame>();
@@ -15,7 +16,7 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            _survivor = new Survivor("Juan", _game);
+            _survivor = new Survivor("Juan", _game, _skillTree);
             _equipmentBaseballBat = new Equipment("Baseball bat");
             _equipmentKatana = new Equipment("Katana");
         }
@@ -161,6 +162,22 @@ namespace Tests
             _survivor.GainExperience(1);
 
             _game.Received(1).ASurvivorLevelUp(_survivor);
+        }
+
+        [Test]
+        public void StartWithLockedSkills()
+        {
+            _skillTree.UnlockedSkills().Returns(0);
+            Assert.AreEqual(0, _survivor.UnlockedSkills());
+        }
+
+        [Test]
+        public void UnlockSkillWhenLevelUpToYellow()
+        {
+            _survivor.experience = 6;
+            _survivor.GainExperience(1);
+            
+            // _skillTree.Received(1).UnlockSkill();
         }
         
     }

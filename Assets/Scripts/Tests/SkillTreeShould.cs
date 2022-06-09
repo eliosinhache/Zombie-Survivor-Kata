@@ -42,7 +42,7 @@ namespace Tests
         }
 
         [Test]
-        public void UnlockSkill()
+        public void UnlockNewSkill()
         {
             Skill newSkillLevelYellow = new Skill();
             newSkillLevelYellow.description = "+1 Action";
@@ -94,7 +94,26 @@ namespace Tests
             
             Assert.AreEqual(3, _skillTree.UnlockedSkills());
         }
-        
+
+        [Test]
+        public void ShowAvailableSkillToUnlock()
+        {
+            Skill newSkillLevelYellow = new Skill();
+            newSkillLevelYellow.description = "+1 Action";
+            newSkillLevelYellow.lvlToUnlock = "Yellow";
+            newSkillLevelYellow.minExperienceNeeded = 7;
+            
+            Skill newSkillLevelOrange = new Skill();
+            newSkillLevelOrange.description = "+1 Die";
+            newSkillLevelOrange.lvlToUnlock = "Orange";
+            newSkillLevelOrange.minExperienceNeeded = 18;
+            int experience = 18;
+            
+            _skillTree.UnlockSkill(newSkillLevelYellow, experience);
+            _skillTree.UnlockSkill(newSkillLevelOrange, experience);
+            
+            Assert.AreEqual(3, _skillTree.AvaibleSkillsToUnlock(experience).Count);
+        }
         
     }
 }

@@ -12,6 +12,7 @@ namespace Classes
         }
 
         Nodo raiz;
+        private Nodo _explorer;
 
         public SkillTree()
         {
@@ -51,6 +52,8 @@ namespace Classes
             skill6.lvlToUnlock = "Red";
             skill6.minExperienceNeeded = 42;
             AddNewSkill(skill6);
+            
+            _explorer = raiz;
         }
 
         public void AddNewSkill (Skill newSkill)
@@ -69,33 +72,33 @@ namespace Classes
                 while (reco != null)
                 {
                     anterior = reco;
-                    if (newSkill.minExperienceNeeded < reco.skill.minExperienceNeeded)
+                    if (newSkill.minExperienceNeeded <= reco.skill.minExperienceNeeded)
                         reco = reco.left;
                     else
                         reco = reco.right;
                 }
-                if (newSkill.minExperienceNeeded < anterior.skill.minExperienceNeeded)
+                if (newSkill.minExperienceNeeded <= anterior.skill.minExperienceNeeded)
                     anterior.left = skill;
                 else
                     anterior.right = skill;
             }
         }
         
-        private int ImprimirEntre (Nodo reco, int count)
+        private int UnlockedSkillsRecursive (Nodo reco, int count)
         {
             if (reco != null)
             {
                 if (reco.skill.isUnlock) {count++;}
-                count = ImprimirEntre (reco.left, count);
-                count = ImprimirEntre (reco.right, count);
+                count = UnlockedSkillsRecursive (reco.left, count);
+                count = UnlockedSkillsRecursive (reco.right, count);
             }
 
             return count;
         }
 
-        public int ImprimirEntre (int count)
+        public int UnlockedSkills (int count)
         {
-            count = ImprimirEntre (raiz, count);
+            count = UnlockedSkillsRecursive (raiz, count);
             Console.WriteLine();
             return count;
         }
@@ -103,29 +106,53 @@ namespace Classes
         public int UnlockedSkills()
         {
             int count = 0;
-            count = ImprimirEntre(count);
+            count = UnlockedSkills(count);
             return count;
         }
 
         public int EnabledSkills(string lvl)
         {
             int count = 0;
-            count += SearchCantOfSkillsPerLevel(count, lvl);
+            count += SearchCountOfSkillsPerLevel(count, lvl);
             return count;
         }
 
         public int LockedSkills()
         {
-            int count = CantOfLockedSkills();
+            int count = CountOfLockedSkills();
             return count;
         }
 
         public void UnlockSkill(Skill unlockSkill, int experience)
         {
             if (unlockSkill.minExperienceNeeded > experience) { return;}
-            if (IsExperienceEnoughToUnlockNewSkill(experience)) { UnlockSkill(unlockSkill, raiz);}
+            if (IsExperienceEnoughToUnlockNewSkill(experience)) { UnlockSkill(unlockSkill, _explorer);}
             
         }
+
+        public List<Skill> AvaibleSkillsToUnlock(int experience)
+        {
+            List<Skill> avaibleSkills = new List<Skill>(); 
+            avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, _explorer, avaibleSkills);
+            return avaibleSkills;
+        }
+
+        private List<Skill> ListOfAvaibleSkillsToUnlock(int experience, Nodo nodo, List<Skill> avaibleSkills)
+        {
+            if (nodo != null)
+            {
+                if (nodo.skill.minExperienceNeeded <= experience && IsExperienceEnoughToUnlockNewSkill(experience) && !nodo.skill.isUnlock)
+                {
+                    avaibleSkills.Add(nodo.skill);
+                }
+
+                avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, nodo.right, avaibleSkills);
+                avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, nodo.left, avaibleSkills);
+            }
+
+            return avaibleSkills;
+        }
+
 
         private bool IsExperienceEnoughToUnlockNewSkill(int experience)
         {
@@ -157,6 +184,7 @@ namespace Classes
             if (nodo.skill.description == unlockSkill.description && nodo.skill.lvlToUnlock == unlockSkill.lvlToUnlock)
             {
                 nodo.skill.isUnlock = true;
+                _explorer = nodo;
             }
             else
             {
@@ -165,7 +193,7 @@ namespace Classes
             }
         }
 
-        private int CantOfLockedSkills()
+        private int CountOfLockedSkills()
         {
             return CantOfLockedSkills(0, raiz);
         }
@@ -184,7 +212,7 @@ namespace Classes
             return count;
         }
 
-        private int SearchCantOfSkillsPerLevel(int count, string lvl)
+        private int SearchCountOfSkillsPerLevel(int count, string lvl)
         {
             count += SearchCantOfSkillsPerLevel(count, raiz, lvl);
             return count;

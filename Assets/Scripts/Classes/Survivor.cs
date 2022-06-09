@@ -7,6 +7,7 @@ namespace Classes
     public class Survivor : ISurvivor
     {
         private IGame _game;
+        private ISkillTree _skillTree;
         public string name;
         public int wounds;
         public bool isAlive;
@@ -15,9 +16,10 @@ namespace Classes
         public float experience;
         public string level = "Blue";
 
-        public Survivor(string survivorName, IGame Game)
+        public Survivor(string survivorName, IGame Game, ISkillTree skillTree)
         {
             _game = Game;
+            _skillTree = skillTree;
             name = survivorName;
             isAlive = true;
             actions = 3;
@@ -124,6 +126,11 @@ namespace Classes
                         _game.ASurvivorLevelUp(this);
                         break;
             }
+        }
+
+        public int UnlockedSkills()
+        {
+            return _skillTree.UnlockedSkills();
         }
     }
 }
