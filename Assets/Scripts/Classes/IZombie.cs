@@ -4,5 +4,6 @@
     {
         void ReceiveDamage(ISurvivor entity);
         void GiveExperienceToKiller(ISurvivor entity);
+        string ReturnLevel();
     }
 }

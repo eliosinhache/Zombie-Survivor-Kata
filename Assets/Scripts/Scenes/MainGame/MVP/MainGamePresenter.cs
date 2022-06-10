@@ -21,6 +21,13 @@ public class MainGamePresenter : IPresenter
         _survivor = new Survivor("Marian", _game, new SkillTree());
         _zombie = new Zombie();
         ShowSurvivorInfo(_survivor);
+        ShowZombieInfo(_zombie);
+    }
+
+    private void ShowZombieInfo(IZombie zombie)
+    {
+        _view.SetZombieLevel(zombie.ReturnLevel());
+        _view.SetZombieLife(1);
     }
 
 
@@ -28,5 +35,6 @@ public class MainGamePresenter : IPresenter
     {
         _view.SetSurvivorLevel(survivor.ReturnLevel());
         _view.SetSurvivorExperience(survivor.CheckExperience());
+        _view.SetSurvivorLife(2);
     }
 }

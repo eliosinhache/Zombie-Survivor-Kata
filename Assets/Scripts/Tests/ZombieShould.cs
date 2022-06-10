@@ -10,7 +10,7 @@ namespace Tests
 {
     public class ZombieShould
     {
-        private Zombie zombie = new Zombie();
+        private IZombie zombie = new Zombie();
         private ISurvivor survivor = Substitute.For<ISurvivor>();
 
         [Test]
@@ -19,6 +19,12 @@ namespace Tests
             zombie.ReceiveDamage(survivor);
             
             survivor.Received(1).GainExperience(1);
+        }
+
+        [Test]
+        public void HaveLevel()
+        {
+            Assert.AreEqual("Blue", zombie.ReturnLevel());
         }
     }
 }
