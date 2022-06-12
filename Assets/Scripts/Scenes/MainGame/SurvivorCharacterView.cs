@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Scenes.MainGame
 {
-    public class SurvivorView: ViewCharacterController
+    public class SurvivorCharacterView: CharacterView
     {
         [SerializeField] private TextMeshProUGUI _experience;
         public void SetExperience(float checkExperience)

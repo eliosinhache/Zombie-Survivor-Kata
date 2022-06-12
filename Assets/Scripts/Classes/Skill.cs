@@ -3,7 +3,7 @@
     public class Skill
     {
         public string description;
-        public string lvlToUnlock;
+        public LevelEnum lvlToUnlock;
         public int minExperienceNeeded;
         public bool isUnlock;
     }

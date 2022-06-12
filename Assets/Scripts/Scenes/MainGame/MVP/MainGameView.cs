@@ -13,9 +13,9 @@ namespace Scenes.MainGame.MVP
     {
         private IMainGamePresenter _mainGamePresenter;
 
-        [SerializeField] private List<SurvivorView> _survivorControllers;
+        [SerializeField] private List<SurvivorCharacterView> _survivorControllers;
 
-        [SerializeField] private List<ZombieView> _zombieControllers;
+        [SerializeField] private List<ZombieCharacterView> _zombieControllers;
 
         [SerializeField] private GameObject _survivorPrefab;
         [SerializeField] private GameObject _zombiePrefab;
@@ -29,12 +29,12 @@ namespace Scenes.MainGame.MVP
             _mainGamePresenter.StartGame();
         }
 
-        public List<SurvivorView> ReturnSurvivorViews()
+        public List<SurvivorCharacterView> ReturnSurvivorViews()
         {
             return _survivorControllers;
         }
 
-        public List<ZombieView> ReturnZombieViews()
+        public List<ZombieCharacterView> ReturnZombieViews()
         {
             return _zombieControllers;
         }
@@ -42,15 +42,15 @@ namespace Scenes.MainGame.MVP
         public void AddSurvivor()
         {
             GameObject newCharacter = Instantiate(_survivorPrefab, _survivorsViewContainer.transform);
-            _survivorControllers.Add(newCharacter.GetComponent<SurvivorView>());
-            _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorView>());
+            _survivorControllers.Add(newCharacter.GetComponent<SurvivorCharacterView>());
+            _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorCharacterView>());
         }
 
         public void AddZombie()
         {
             GameObject newCharacter = Instantiate(_zombiePrefab, _zombieViewContainer.transform);
-            _zombieControllers.Add(newCharacter.GetComponent<ZombieView>());
-            _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieView>());
+            _zombieControllers.Add(newCharacter.GetComponent<ZombieCharacterView>());
+            _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieCharacterView>());
         }
     }
 }

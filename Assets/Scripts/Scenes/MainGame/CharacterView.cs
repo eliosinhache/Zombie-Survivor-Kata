@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Scenes.MainGame
 {
-    public abstract class ViewCharacterController : MonoBehaviour
+    public abstract class CharacterView : MonoBehaviour
     {
         [SerializeField] protected TextMeshProUGUI _Level;
         [SerializeField] protected GameObject _survivorHeartConteinter;

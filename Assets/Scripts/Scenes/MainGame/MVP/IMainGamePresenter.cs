@@ -3,8 +3,8 @@
     public interface IMainGamePresenter
     {
         void StartGame();
-        void SetInfoSurvivor(SurvivorView survivorController);
-        void SetInfoZombie(ZombieView zombieController);
+        void SetInfoSurvivor(SurvivorCharacterView survivorCharacterController);
+        void SetInfoZombie(ZombieCharacterView zombieCharacterController);
         void CreateSurvivor(string nmeSurvivor);
     }
 }

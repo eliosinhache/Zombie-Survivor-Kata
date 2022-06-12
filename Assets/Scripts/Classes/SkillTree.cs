@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Classes
 {
@@ -8,113 +9,109 @@ namespace Classes
         class Nodo
         {
             public Skill skill;
-            public Nodo left, right;
+            public Nodo next;
         }
 
         Nodo raiz;
         private Nodo _explorer;
+        private List<Nodo> _levelYellowSkills = new List<Nodo>();
+        private List<Nodo> _levelOrangeSkills = new List<Nodo>();
+        private List<Nodo> _levelRedSkills = new List<Nodo>();
 
         public SkillTree()
         {
             raiz = null;
             Skill skill = new Skill();
             skill.description = "+1 Action";
-            skill.lvlToUnlock = "Yellow";
+            skill.lvlToUnlock = LevelEnum.Yellow;
             skill.minExperienceNeeded = 7;
-            AddNewSkill(skill);
+            AddNewSkill(skill, LevelEnum.Yellow);
             
             Skill skill2 = new Skill();
             skill2.description = "+1 Die";
-            skill2.lvlToUnlock = "Orange";
+            skill2.lvlToUnlock = LevelEnum.Orange;
             skill2.minExperienceNeeded = 18;
-            AddNewSkill(skill2);
+            AddNewSkill(skill2, LevelEnum.Orange);
             
             Skill skill3 = new Skill();
             skill3.description = "+1 Free Move Action";
-            skill3.lvlToUnlock = "Orange";
+            skill3.lvlToUnlock = LevelEnum.Orange;
             skill3.minExperienceNeeded = 18;
-            AddNewSkill(skill3);
+            AddNewSkill(skill3, LevelEnum.Orange);
 
             Skill skill4 = new Skill();
             skill4.description = "Hoard";
-            skill4.lvlToUnlock = "Red";
+            skill4.lvlToUnlock = LevelEnum.Red;
             skill4.minExperienceNeeded = 42;
-            AddNewSkill(skill4);
+            AddNewSkill(skill4, LevelEnum.Red);
             
             Skill skill5 = new Skill();
             skill5.description = "Tough";
-            skill5.lvlToUnlock = "Red";
+            skill5.lvlToUnlock = LevelEnum.Red;
             skill5.minExperienceNeeded = 42;
-            AddNewSkill(skill5);
+            AddNewSkill(skill5, LevelEnum.Red);
             
             Skill skill6 = new Skill();
             skill6.description = "Sniper";
-            skill6.lvlToUnlock = "Red";
+            skill6.lvlToUnlock = LevelEnum.Red;
             skill6.minExperienceNeeded = 42;
-            AddNewSkill(skill6);
-            
-            _explorer = raiz;
+            AddNewSkill(skill6, LevelEnum.Red);
+
+            _explorer = null;
         }
 
-        public void AddNewSkill (Skill newSkill)
+        public void AddNewSkill (Skill skill, LevelEnum level)
         {
-            Nodo skill;
-            skill = new Nodo ();
-            skill.skill = newSkill;
-            skill.left = null;
-            skill.right = null;
-            if (raiz == null)
-                raiz = skill;
-            else
+            Nodo newSkill;
+            newSkill = new Nodo ();
+            newSkill.skill = skill;
+            newSkill.next = null;
+            switch (level)
             {
-                Nodo anterior = null, reco;
-                reco = raiz;
-                while (reco != null)
-                {
-                    anterior = reco;
-                    if (newSkill.minExperienceNeeded <= reco.skill.minExperienceNeeded)
-                        reco = reco.left;
-                    else
-                        reco = reco.right;
-                }
-                if (newSkill.minExperienceNeeded <= anterior.skill.minExperienceNeeded)
-                    anterior.left = skill;
-                else
-                    anterior.right = skill;
+                case LevelEnum.Yellow:
+                    _levelYellowSkills.Add(newSkill);
+                    break;
+                case LevelEnum.Orange:
+                    if (_levelOrangeSkills.Count == 0) { PointToFirstNodo(newSkill, _levelYellowSkills); } 
+                    _levelOrangeSkills.Add(newSkill);
+                    break;
+                case LevelEnum.Red:
+                    if (_levelRedSkills.Count == 0) { PointToFirstNodo(newSkill, _levelOrangeSkills); } 
+                    _levelRedSkills.Add(newSkill);
+                    break;
             }
         }
-        
-        private int UnlockedSkillsRecursive (Nodo reco, int count)
+
+        private void PointToFirstNodo(Nodo newSkill, List<Nodo> previousLevelSkills)
         {
-            if (reco != null)
+            foreach (Nodo previousSkill in previousLevelSkills)
             {
-                if (reco.skill.isUnlock) {count++;}
-                count = UnlockedSkillsRecursive (reco.left, count);
-                count = UnlockedSkillsRecursive (reco.right, count);
+                previousSkill.next = newSkill;
             }
-
-            return count;
         }
 
-        public int UnlockedSkills (int count)
-        {
-            count = UnlockedSkillsRecursive (raiz, count);
-            Console.WriteLine();
-            return count;
-        }
-
-        public int UnlockedSkills()
+        public int UnlockedSkills ()
         {
             int count = 0;
-            count = UnlockedSkills(count);
+            count += _levelYellowSkills.Count(item => item.skill.isUnlock);
+            count += _levelOrangeSkills.Count(item => item.skill.isUnlock);
+            count += _levelRedSkills.Count(item => item.skill.isUnlock);
+
+            // count = UnlockedSkillsRecursive (raiz, count);
+            // Console.WriteLine();
             return count;
         }
 
-        public int EnabledSkills(string lvl)
+        // public int UnlockedSkills()
+        // {
+        //     int count = 0;
+        //     count = UnlockedSkills(count);
+        //     return count;
+        // }
+
+        public int EnabledSkills(LevelEnum level)
         {
-            int count = 0;
-            count += SearchCountOfSkillsPerLevel(count, lvl);
-            return count;
+            return SearchCountOfSkillsPerLevel(level);
         }
 
         public int LockedSkills()
@@ -126,45 +123,48 @@ namespace Classes
         public void UnlockSkill(Skill unlockSkill, int experience)
         {
             if (unlockSkill.minExperienceNeeded > experience) { return;}
-            if (IsExperienceEnoughToUnlockNewSkill(experience)) { UnlockSkill(unlockSkill, _explorer);}
-            
+            if (IsExperienceEnoughToUnlockNewSkill(experience)) { UnlockSkill(unlockSkill);}
         }
 
-        public List<Skill> AvaibleSkillsToUnlock(int experience)
+        public List<Skill> AvaibleSkillsToUnlock(LevelEnum level)
         {
-            List<Skill> avaibleSkills = new List<Skill>(); 
-            avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, _explorer, avaibleSkills);
-            return avaibleSkills;
-        }
-
-        private List<Skill> ListOfAvaibleSkillsToUnlock(int experience, Nodo nodo, List<Skill> avaibleSkills)
-        {
-            if (nodo != null)
+            List<Skill> availableSkillsToUnlock = new List<Skill>();
+            switch (level)
             {
-                if (nodo.skill.minExperienceNeeded <= experience && IsExperienceEnoughToUnlockNewSkill(experience) && !nodo.skill.isUnlock)
-                {
-                    avaibleSkills.Add(nodo.skill);
-                }
-
-                avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, nodo.right, avaibleSkills);
-                avaibleSkills = ListOfAvaibleSkillsToUnlock(experience, nodo.left, avaibleSkills);
+                case LevelEnum.Yellow:
+                    foreach (Nodo nodo in _levelYellowSkills)
+                    {
+                        if (!nodo.skill.isUnlock) {availableSkillsToUnlock.Add(nodo.skill);}
+                    }
+                    break;
+                case LevelEnum.Orange:
+                    foreach (Nodo nodo in _levelOrangeSkills)
+                    {
+                        if (!nodo.skill.isUnlock) { availableSkillsToUnlock.Add(nodo.skill);}
+                    }
+                    break;
+                case LevelEnum.Red:
+                    foreach (Nodo nodo in _levelRedSkills)
+                    {
+                        if (!nodo.skill.isUnlock) {availableSkillsToUnlock.Add(nodo.skill);}
+                    }
+                    break;
             }
 
-            return avaibleSkills;
+            return availableSkillsToUnlock;
         }
-
 
         private bool IsExperienceEnoughToUnlockNewSkill(int experience)
         {
-            if (experience <= 7)
+            if (experience >= 7 && experience < 18)
             {
                 return UnlockedSkills() < 1;
             }
-            if (experience<= 18)
+            if (experience >= 18 && experience < 42)
             {
                 return UnlockedSkills() < 2;
             }
-            if (experience <= 60) {return UnlockedSkills() < 3;}
+            if (experience >= 42 && experience < 61) {return UnlockedSkills() < 3;}
 
             if (experience >= 61 && experience < 86)
             {
@@ -178,54 +178,60 @@ namespace Classes
             return UnlockedSkills() < 6;
         }
 
-        private void UnlockSkill(Skill unlockSkill, Nodo nodo)
+        private void UnlockSkill(Skill unlockSkill)
         {
-            if (nodo == null) return;
-            if (nodo.skill.description == unlockSkill.description && nodo.skill.lvlToUnlock == unlockSkill.lvlToUnlock)
+            switch (unlockSkill.lvlToUnlock)
             {
-                nodo.skill.isUnlock = true;
-                _explorer = nodo;
+                case LevelEnum.Yellow:
+                    SearchAndUnlockSkill(unlockSkill, _levelYellowSkills);
+                    break;
+                case LevelEnum.Orange:
+                    SearchAndUnlockSkill(unlockSkill, _levelOrangeSkills);
+                    break;
+                case LevelEnum.Red:
+                    SearchAndUnlockSkill(unlockSkill, _levelRedSkills);
+                    break;
             }
-            else
+        }
+
+        private void SearchAndUnlockSkill(Skill unlockSkill, List<Nodo> levelSkills)
+        {
+            foreach (Nodo nodo in levelSkills)
             {
-                UnlockSkill(unlockSkill, nodo.right);
-                UnlockSkill(unlockSkill, nodo.left);
+                if (nodo.skill.description == unlockSkill.description)
+                {
+                    nodo.skill.isUnlock = true;
+                }
             }
         }
 
         private int CountOfLockedSkills()
         {
-            return CantOfLockedSkills(0, raiz);
-        }
-        private int CantOfLockedSkills(int count, Nodo recc)
-        {
-            if (recc != null)
-            {
-                if (!recc.skill.isUnlock)
-                {
-                    count++;
-                }
-                count = CantOfLockedSkills(count, recc.left);
-                count = CantOfLockedSkills(count, recc.right);
-            }
-
+            int count = 0;
+            count += _levelYellowSkills.Count(item => !item.skill.isUnlock);
+            count += _levelOrangeSkills.Count(item => !item.skill.isUnlock);
+            count += _levelRedSkills.Count(item => !item.skill.isUnlock);
             return count;
         }
 
-        private int SearchCountOfSkillsPerLevel(int count, string lvl)
+        private int SearchCountOfSkillsPerLevel(LevelEnum level)
         {
-            count += SearchCantOfSkillsPerLevel(count, raiz, lvl);
-            return count;
-        }
-
-        private int SearchCantOfSkillsPerLevel(int count, Nodo recc, string lvl)
-        {
-            if (recc != null)
+            int count = 0;
+            switch (level)
             {
-                if (recc.skill.lvlToUnlock == lvl) { count++; }
-                count = SearchCantOfSkillsPerLevel(count, recc.left, lvl);
-                count = SearchCantOfSkillsPerLevel(count, recc.right, lvl);
-            }
+                case LevelEnum.Blue:
+                    count = 0;
+                    break;
+                case LevelEnum.Yellow:
+                    count += _levelYellowSkills.Count(item => item.skill != null && !item.skill.isUnlock);
+                    break;
+                case LevelEnum.Orange:
+                    count += _levelOrangeSkills.Count(item => item.skill != null && !item.skill.isUnlock);
+                    break;
+                case LevelEnum.Red:
+                    count += _levelRedSkills.Count(item => item.skill != null && !item.skill.isUnlock);
+                    break;
+            } 
             return count;
         }
     }

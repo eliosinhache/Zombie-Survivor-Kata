@@ -4,8 +4,8 @@ namespace Scenes.MainGame.MVP
 {
     public interface IMainGameView
     {
-        List<SurvivorView> ReturnSurvivorViews();
-        List<ZombieView> ReturnZombieViews();
+        List<SurvivorCharacterView> ReturnSurvivorViews();
+        List<ZombieCharacterView> ReturnZombieViews();
         void AddSurvivor();
         void AddZombie();
     }

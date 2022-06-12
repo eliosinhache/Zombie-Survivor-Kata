@@ -25,11 +25,11 @@ namespace Tests
         }
         
         [Test]
-        [TestCase("Blue", 0)]
-        [TestCase("Yellow", 1)]
-        [TestCase("Orange", 2)]
-        [TestCase("Red", 3)]
-        public void HavePotentialSkills(string level, int skillCount)
+        [TestCase(LevelEnum.Blue, 0)]
+        [TestCase(LevelEnum.Yellow, 1)]
+        [TestCase(LevelEnum.Orange, 2)]
+        [TestCase(LevelEnum.Red, 3)]
+        public void HavePotentialSkills(LevelEnum level, int skillCount)
         {
             Assert.AreEqual(skillCount, _skillTree.EnabledSkills(level));
         }
@@ -46,15 +46,15 @@ namespace Tests
         {
             Skill newSkillLevelYellow = new Skill();
             newSkillLevelYellow.description = "+1 Action";
-            newSkillLevelYellow.lvlToUnlock = "Yellow";
+            newSkillLevelYellow.lvlToUnlock = LevelEnum.Yellow;
             newSkillLevelYellow.minExperienceNeeded = 7;
 
             Skill newSkillLevelRed = new Skill();
             newSkillLevelRed.description = "Sniper";
-            newSkillLevelRed.lvlToUnlock = "Red";
+            newSkillLevelRed.lvlToUnlock = LevelEnum.Red;
             newSkillLevelRed.minExperienceNeeded = 42;
 
-            int experience = 45;
+            int experience = 46;
             
             _skillTree.UnlockSkill(newSkillLevelYellow, experience);
             _skillTree.UnlockSkill(newSkillLevelRed, experience);
@@ -67,22 +67,22 @@ namespace Tests
         {
             Skill newSkillLevelYellow = new Skill();
             newSkillLevelYellow.description = "+1 Action";
-            newSkillLevelYellow.lvlToUnlock = "Yellow";
+            newSkillLevelYellow.lvlToUnlock = LevelEnum.Yellow;
             newSkillLevelYellow.minExperienceNeeded = 7;
             
             Skill newSkillLevelOrange = new Skill();
             newSkillLevelOrange.description = "+1 Die";
-            newSkillLevelOrange.lvlToUnlock = "Orange";
+            newSkillLevelOrange.lvlToUnlock = LevelEnum.Orange;
             newSkillLevelOrange.minExperienceNeeded = 18;
 
             Skill newSkillLevelOrangeRestart = new Skill();
             newSkillLevelOrangeRestart.description = "+1 Free Move Action";
-            newSkillLevelOrangeRestart.lvlToUnlock = "Orange";
+            newSkillLevelOrangeRestart.lvlToUnlock = LevelEnum.Orange;
             newSkillLevelOrangeRestart.minExperienceNeeded = 18;
 
             Skill newSkillLevelRed = new Skill();
             newSkillLevelRed.description = "Sniper";
-            newSkillLevelRed.lvlToUnlock = "Red";
+            newSkillLevelRed.lvlToUnlock = LevelEnum.Orange;
             newSkillLevelRed.minExperienceNeeded = 42;
 
             int experience = 60;
@@ -98,22 +98,44 @@ namespace Tests
         [Test]
         public void ShowAvailableSkillToUnlock()
         {
+            UnlockFirstTowSkills();
+
+            Skill skill4 = new Skill();
+            skill4.description = "Hoard";
+            skill4.lvlToUnlock = LevelEnum.Red;
+            skill4.minExperienceNeeded = 42;
+            
+            Skill skill5 = new Skill();
+            skill5.description = "Tough";
+            skill5.lvlToUnlock = LevelEnum.Red;
+            skill5.minExperienceNeeded = 42;
+            
+            Skill skill6 = new Skill();
+            skill6.description = "Sniper";
+            skill6.lvlToUnlock = LevelEnum.Red;
+            skill6.minExperienceNeeded = 42;
+            
+            
+            Assert.IsTrue(_skillTree.AvaibleSkillsToUnlock(LevelEnum.Red).Exists(item => item.description == skill4.description));
+            Assert.IsTrue(_skillTree.AvaibleSkillsToUnlock(LevelEnum.Red).Exists(item => item.description == skill5.description));
+            Assert.IsTrue(_skillTree.AvaibleSkillsToUnlock(LevelEnum.Red).Exists(item => item.description == skill5.description));
+        }
+
+        private void UnlockFirstTowSkills()
+        {
             Skill newSkillLevelYellow = new Skill();
             newSkillLevelYellow.description = "+1 Action";
-            newSkillLevelYellow.lvlToUnlock = "Yellow";
+            newSkillLevelYellow.lvlToUnlock = LevelEnum.Yellow;
             newSkillLevelYellow.minExperienceNeeded = 7;
-            
+
             Skill newSkillLevelOrange = new Skill();
             newSkillLevelOrange.description = "+1 Die";
-            newSkillLevelOrange.lvlToUnlock = "Orange";
+            newSkillLevelOrange.lvlToUnlock = LevelEnum.Orange;
             newSkillLevelOrange.minExperienceNeeded = 18;
-            int experience = 18;
-            
+            int experience = 43;
+
             _skillTree.UnlockSkill(newSkillLevelYellow, experience);
             _skillTree.UnlockSkill(newSkillLevelOrange, experience);
-            
-            Assert.AreEqual(3, _skillTree.AvaibleSkillsToUnlock(experience).Count);
         }
-        
     }
 }

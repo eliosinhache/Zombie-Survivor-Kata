@@ -11,8 +11,8 @@ public class MainGamePresenter : IMainGamePresenter
     private ISurvivor _survivor;
     private IZombie _zombie;
     private IGame _game;
-    private List<SurvivorView> _survivorContainter;
-    private List<ZombieView> _zombieContainter;
+    private List<SurvivorCharacterView> _survivorContainter;
+    private List<ZombieCharacterView> _zombieContainter;
     public MainGamePresenter(IMainGameView mainGameView)
     {
         _mainGameView = mainGameView;
@@ -34,17 +34,17 @@ public class MainGamePresenter : IMainGamePresenter
         _mainGameView.AddZombie();
     }
 
-    public void SetInfoSurvivor(SurvivorView viewCharacter)
+    public void SetInfoSurvivor(SurvivorCharacterView characterViewCharacter)
     {
-        viewCharacter.Setevel(_survivor.ReturnLevel());
-        viewCharacter.SetExperience(_survivor.CheckExperience());
-        viewCharacter.SetLife(2);
+        characterViewCharacter.Setevel(_survivor.ReturnLevel());
+        characterViewCharacter.SetExperience(_survivor.CheckExperience());
+        characterViewCharacter.SetLife(2);
     }
 
-    public void SetInfoZombie(ZombieView zombieController)
+    public void SetInfoZombie(ZombieCharacterView zombieCharacterController)
     {
-        zombieController.Setevel(_zombie.ReturnLevel());
-        zombieController.SetLife(1);
+        zombieCharacterController.Setevel(_zombie.ReturnLevel());
+        zombieCharacterController.SetLife(1);
     }
 
     public void CreateSurvivor(string nmeSurvivor)
