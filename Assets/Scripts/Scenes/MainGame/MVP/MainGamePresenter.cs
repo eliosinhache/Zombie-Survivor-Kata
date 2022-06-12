@@ -1,40 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Classes;
+using Scenes.MainGame;
 using Scenes.MainGame.MVP;
 using UnityEngine;
 
-public class MainGamePresenter : IPresenter
+public class MainGamePresenter : IMainGamePresenter
 {
-    private IView _view;
+    private IMainGameView _mainGameView;
     private ISurvivor _survivor;
     private IZombie _zombie;
     private IGame _game;
-    public MainGamePresenter(IView view)
+    private List<SurvivorView> _survivorContainter;
+    private List<ZombieView> _zombieContainter;
+    public MainGamePresenter(IMainGameView mainGameView)
     {
-        _view = view;
+        _mainGameView = mainGameView;
         _game = new Game();
+        _survivorContainter = _mainGameView.ReturnSurvivorViews();
+        _zombieContainter = _mainGameView.ReturnZombieViews();
+
     }
 
     public void StartGame()
     {
-        _survivor = new Survivor("Marian", _game, new SkillTree());
+        CreateSurvivor("Marian");
+        CreateZombie();
+    }
+
+    private void CreateZombie()
+    {
         _zombie = new Zombie();
-        ShowSurvivorInfo(_survivor);
-        ShowZombieInfo(_zombie);
+        _mainGameView.AddSurvivor();
     }
 
-    private void ShowZombieInfo(IZombie zombie)
+    public void SetInfoSurvivor(SurvivorView viewCharacter)
     {
-        _view.SetZombieLevel(zombie.ReturnLevel());
-        _view.SetZombieLife(1);
+        viewCharacter.Setevel(_survivor.ReturnLevel());
+        viewCharacter.SetExperience(_survivor.CheckExperience());
+        viewCharacter.SetLife(2);
     }
 
-
-    private void ShowSurvivorInfo(ISurvivor survivor)
+    public void SetInfoZombie(ZombieView zombieController)
     {
-        _view.SetSurvivorLevel(survivor.ReturnLevel());
-        _view.SetSurvivorExperience(survivor.CheckExperience());
-        _view.SetSurvivorLife(2);
+        zombieController.Setevel(_zombie.ReturnLevel());
+        zombieController.SetLife(1);
     }
+
+    public void CreateSurvivor(string nmeSurvivor)
+    {
+        _survivor = new Survivor(nmeSurvivor, _game, new SkillTree());
+        _game.AddSurvivor(_survivor);
+        _mainGameView.AddSurvivor();
+    }
+
 }

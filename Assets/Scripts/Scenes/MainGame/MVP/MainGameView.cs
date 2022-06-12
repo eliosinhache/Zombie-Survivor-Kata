@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Classes;
 using TMPro;
 using TMPro.EditorUtilities;
 using Unity.Mathematics;
@@ -7,54 +9,40 @@ using UnityEngine.UI;
 
 namespace Scenes.MainGame.MVP
 {
-    public class MainGameView : MonoBehaviour, IView
+    public class MainGameView : MonoBehaviour, IMainGameView
     {
-        private IPresenter _presenter;
-        [SerializeField] private TextMeshProUGUI _survivorLevel;
-        [SerializeField] private TextMeshProUGUI _survivorExperience;
-        [SerializeField] private GameObject _survivorHeartConteinter;
-        [SerializeField] private GameObject _zombieHeartConteinter;
-        [SerializeField] private TextMeshProUGUI _zombieLevel;
-        [SerializeField] private TextMeshProUGUI _zombieExperience;
-        [SerializeField] private GameObject _heartImage;
+        private IMainGamePresenter _mainGamePresenter;
+
+        [SerializeField]
+        private List<SurvivorView> _survivorControllers;
+
+        [SerializeField] private List<ZombieView> _zombieControllers;
+
+        [SerializeField] private GameObject _survivorPrefab;
+
+        [SerializeField] private GameObject _charactersPanel;
 
         public void Start()
         {
-            _presenter = new MainGamePresenter(this);
-            _presenter.StartGame();
+            _mainGamePresenter = new MainGamePresenter(this);
+            _mainGamePresenter.StartGame();
         }
 
-        public void SetSurvivorLevel(string level)
+        public List<SurvivorView> ReturnSurvivorViews()
         {
-            _survivorLevel.text = $"level: {level}";
+            return _survivorControllers;
         }
 
-        public void SetSurvivorExperience(float checkExperience)
+        public List<ZombieView> ReturnZombieViews()
         {
-            _survivorExperience.text = $"Experience: {checkExperience}";
+            return _zombieControllers;
         }
 
-        public void SetZombieLevel(string returnLevel)
+        public void AddSurvivor()
         {
-            _zombieLevel.text = $"Level: {returnLevel}";
-        }
-
-        public void SetSurvivorLife(int lifes)
-        {
-            while (lifes > 0)
-            {
-                GameObject hear = Instantiate(_heartImage, Vector2.zero, Quaternion.identity, _survivorHeartConteinter.transform);
-                lifes--;
-            }
-        }
-
-        public void SetZombieLife(int lifes)
-        {
-            while (lifes > 0)
-            {
-                GameObject hear = Instantiate(_heartImage, Vector2.zero, Quaternion.identity, _zombieHeartConteinter.transform);
-                lifes--;
-            }
+            GameObject newCharacter = Instantiate(_survivorPrefab, _charactersPanel.transform);
+            _survivorControllers.Add(newCharacter.GetComponent<SurvivorView>());
+            _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorView>());
         }
     }
 }
