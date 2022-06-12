@@ -7,5 +7,6 @@ namespace Scenes.MainGame.MVP
         List<SurvivorView> ReturnSurvivorViews();
         List<ZombieView> ReturnZombieViews();
         void AddSurvivor();
+        void AddZombie();
     }
 }

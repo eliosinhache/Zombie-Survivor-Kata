@@ -31,7 +31,7 @@ public class MainGamePresenter : IMainGamePresenter
     private void CreateZombie()
     {
         _zombie = new Zombie();
-        _mainGameView.AddSurvivor();
+        _mainGameView.AddZombie();
     }
 
     public void SetInfoSurvivor(SurvivorView viewCharacter)

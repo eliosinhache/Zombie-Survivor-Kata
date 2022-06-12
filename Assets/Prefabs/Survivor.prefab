@@ -619,9 +619,9 @@ GameObject:
   - component: {fileID: 6065148525145085039}
   - component: {fileID: 6065148525145085037}
   - component: {fileID: -6346756850397411191}
-  - component: {fileID: 3048525923185955414}
+  - component: {fileID: 308668038659835852}
   m_Layer: 5
-  m_Name: Character
+  m_Name: Survivor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -731,7 +731,7 @@ MonoBehaviour:
   m_FlexibleWidth: 500
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &3048525923185955414
+--- !u!114 &308668038659835852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -740,12 +740,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6065148525145085025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e808b88c7ea6f42a2c9b951bdd983b, type: 3}
+  m_Script: {fileID: 11500000, guid: 98b9b6203791404aafc9dfa302d32d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _survivorLevel: {fileID: 6065148523888292392}
-  _survivorExperience: {fileID: 6065148524736937897}
+  _Level: {fileID: 6065148523888292392}
   _survivorHeartConteinter: {fileID: 562001558179685712}
+  _heartImage: {fileID: 2054562936054060530, guid: 88f2c029c686b4f4883fb2c2cc092dab,
+    type: 3}
+  _experience: {fileID: 6065148524736937897}
 --- !u!1 &6455097254255841749
 GameObject:
   m_ObjectHideFlags: 0
