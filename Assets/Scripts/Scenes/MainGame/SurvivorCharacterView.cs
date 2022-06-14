@@ -8,7 +8,7 @@ namespace Scenes.MainGame
         [SerializeField] private TextMeshProUGUI _experience;
         public void SetExperience(float checkExperience)
         {
-            _experience.text = $"Experience: {checkExperience}";
+            _experience.text = $"Exp: {checkExperience}";
         }
     }
 }

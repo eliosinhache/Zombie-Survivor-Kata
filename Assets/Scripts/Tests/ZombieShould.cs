@@ -24,7 +24,7 @@ namespace Tests
         [Test]
         public void HaveLevel()
         {
-            Assert.AreEqual("Blue", zombie.ReturnLevel());
+            Assert.AreEqual(LevelEnum.Blue, zombie.ReturnLevel());
         }
     }
 }

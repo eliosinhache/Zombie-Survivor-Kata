@@ -2,7 +2,7 @@
 {
     public class Zombie : IZombie
     {
-        private string level = "Blue";
+        private LevelEnum level = LevelEnum.Blue;
         public void ReceiveDamage(ISurvivor entity)
         {
             GiveExperienceToKiller(entity);
@@ -13,7 +13,7 @@
             entity.GainExperience(1);
         }
 
-        public string ReturnLevel()
+        public LevelEnum ReturnLevel()
         {
             return level;
         }

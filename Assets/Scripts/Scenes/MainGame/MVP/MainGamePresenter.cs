@@ -36,14 +36,14 @@ public class MainGamePresenter : IMainGamePresenter
 
     public void SetInfoSurvivor(SurvivorCharacterView characterViewCharacter)
     {
-        characterViewCharacter.Setevel(_survivor.ReturnLevel());
+        characterViewCharacter.Setevel(_survivor.ReturnLevel().ToString());
         characterViewCharacter.SetExperience(_survivor.CheckExperience());
         characterViewCharacter.SetLife(2);
     }
 
     public void SetInfoZombie(ZombieCharacterView zombieCharacterController)
     {
-        zombieCharacterController.Setevel(_zombie.ReturnLevel());
+        zombieCharacterController.Setevel(_zombie.ReturnLevel().ToString());
         zombieCharacterController.SetLife(1);
     }
 

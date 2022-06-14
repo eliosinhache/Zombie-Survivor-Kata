@@ -14,7 +14,7 @@ namespace Classes
         public int actions;
         public List<Equipment> equipment = new List<Equipment>(5);
         public float experience;
-        public string level = "Blue";
+        public LevelEnum level = LevelEnum.Blue;
 
         public Survivor(string survivorName, IGame Game, ISkillTree skillTree)
         {
@@ -104,7 +104,7 @@ namespace Classes
             return experience;
         }
 
-        public string ReturnLevel()
+        public LevelEnum ReturnLevel()
         {
             return level;
         }
@@ -114,15 +114,15 @@ namespace Classes
             switch (experience)
             {
                 case 6:
-                    level = "Yellow";
+                    level = LevelEnum.Yellow;
                     _game.ASurvivorLevelUp(this);
                     break;
                 case 18:
-                        level = "Orange";
+                        level = LevelEnum.Orange;
                         _game.ASurvivorLevelUp(this);
                         break;
                 case 42:
-                        level = "Red";
+                        level = LevelEnum.Red;
                         _game.ASurvivorLevelUp(this);
                         break;
             }

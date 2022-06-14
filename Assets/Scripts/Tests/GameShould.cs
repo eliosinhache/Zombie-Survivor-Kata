@@ -72,7 +72,7 @@ namespace Tests
         [Test]
         public void StartWithBlueLevel()
         {
-            Assert.AreEqual("Blue", _game.level);
+            Assert.AreEqual(LevelEnum.Blue, _game.level);
         }
 
         [Test]
@@ -82,14 +82,14 @@ namespace Tests
             _survivor02.ReturnName().Returns("Pedro");
             _survivor01.CheckExperience().Returns(19);
             _survivor02.CheckExperience().Returns(56);
-            _survivor01.ReturnLevel().Returns("Orange");
-            _survivor02.ReturnLevel().Returns("Red");
+            _survivor01.ReturnLevel().Returns(LevelEnum.Orange);
+            _survivor02.ReturnLevel().Returns(LevelEnum.Red);
             _game.AddSurvivor(_survivor01);
             _game.AddSurvivor(_survivor02);
             
             _game.ASurvivorLevelUp(_survivor01);
             
-            Assert.AreEqual("Red", _game.level);
+            Assert.AreEqual(LevelEnum.Red, _game.level);
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Tests
         public void RecordGameLevelChangeWhenASurvivorLevelUp()
         {
             _survivor01.CheckExperience().Returns(19);
-            _survivor01.ReturnLevel().Returns("Orange");
+            _survivor01.ReturnLevel().Returns(LevelEnum.Orange);
             _game.AddSurvivor(_survivor01);
             _game.ASurvivorLevelUp(_survivor01);
             
@@ -156,10 +156,10 @@ namespace Tests
         public void RecordGameLevelChangeWhenASurvivorDie()
         {
             _survivor01.CheckExperience().Returns(19);
-            _survivor01.ReturnLevel().Returns("Orange");
+            _survivor01.ReturnLevel().Returns(LevelEnum.Orange);
             _survivor01.CheckIfIsAlive().Returns(true);
             _survivor02.CheckExperience().Returns(29);
-            _survivor02.ReturnLevel().Returns("Red");
+            _survivor02.ReturnLevel().Returns(LevelEnum.Red);
             _survivor02.CheckIfIsAlive().Returns(false);
             _game.AddSurvivor(_survivor01);
             _game.AddSurvivor(_survivor02);
@@ -172,10 +172,10 @@ namespace Tests
         public void RecordGameOverWhenAllSurvivorDie()
         {
             _survivor01.CheckExperience().Returns(19);
-            _survivor01.ReturnLevel().Returns("Orange");
+            _survivor01.ReturnLevel().Returns(LevelEnum.Orange);
             _survivor01.CheckIfIsAlive().Returns(false);
             _survivor02.CheckExperience().Returns(29);
-            _survivor02.ReturnLevel().Returns("Red");
+            _survivor02.ReturnLevel().Returns(LevelEnum.Red);
             _survivor02.CheckIfIsAlive().Returns(false);
             _game.AddSurvivor(_survivor01);
             _game.AddSurvivor(_survivor02);

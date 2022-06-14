@@ -58,7 +58,7 @@ namespace Tests
         }
         
         [Test]
-        public void HaveTwoEquipamentInHand()
+        public void HaveTwoEquipmentInHand()
         {
             _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
             _survivor.Equipate(_equipmentKatana, "In Hand");
@@ -70,7 +70,7 @@ namespace Tests
         }
         
         [Test]
-        public void Have5EquipamentInReserve()
+        public void HaveMaxOfEquipmentInReserve()
         {
             _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
             _survivor.Equipate(_equipmentKatana, "In Reserve");
@@ -108,7 +108,7 @@ namespace Tests
         [Test]
         public void StartWithBlueLevel()
         {
-            Assert.AreEqual("Blue", _survivor.level);
+            Assert.AreEqual(LevelEnum.Blue, _survivor.level);
         }
         
         [Test]
@@ -133,7 +133,7 @@ namespace Tests
             _survivor.experience = 5;
             _survivor.GainExperience(1);
             
-            Assert.AreEqual("Yellow", _survivor.level);
+            Assert.AreEqual(LevelEnum.Yellow, _survivor.level);
         }
         
         [Test]
@@ -143,7 +143,7 @@ namespace Tests
 
             _survivor.GainExperience(1);
             
-            Assert.AreEqual("Orange", _survivor.level);
+            Assert.AreEqual(LevelEnum.Orange, _survivor.level);
         }
         [Test]
         public void LevelUpToRedWhenHaveFortyTwoExperience()
@@ -152,7 +152,7 @@ namespace Tests
 
             _survivor.GainExperience(1);
             
-            Assert.AreEqual("Red", _survivor.level);
+            Assert.AreEqual(LevelEnum.Red, _survivor.level);
         }
 
         [Test]

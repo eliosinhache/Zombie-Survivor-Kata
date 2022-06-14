@@ -8,7 +8,7 @@ namespace Classes
         string ReturnName();
         void ReceiveWound();
         float CheckExperience();
-        string ReturnLevel();
+        LevelEnum ReturnLevel();
         void Equipate(Equipment equipment, string typeOfEquipment);
     }
 }

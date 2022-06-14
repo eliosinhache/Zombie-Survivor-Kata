@@ -10,7 +10,7 @@ namespace Classes
         public List<ISurvivor> iPlayers = new List<ISurvivor>();
         
         public bool isFinish;
-        public string level = "Blue";
+        public LevelEnum level = LevelEnum.Blue;
         public List<string> history = new List<string>();
 
 
