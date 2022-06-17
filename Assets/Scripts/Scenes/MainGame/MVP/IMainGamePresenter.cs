@@ -10,5 +10,7 @@ namespace Scenes.MainGame.MVP
         void SetInfoZombie(ZombieCharacterView zombieCharacterController);
         void CreateSurvivor(string nmeSurvivor);
         void ASurvivorWasSelected(String survivor);
+        void AZombieWasSelected(string zombieName);
+        void SurvivorAttackAZombie();
     }
 }

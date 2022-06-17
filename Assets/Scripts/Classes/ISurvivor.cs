@@ -10,5 +10,6 @@ namespace Classes
         float CheckExperience();
         LevelEnum ReturnLevel();
         void Equipate(Equipment equipment, string typeOfEquipment);
+        void DealDamage(IZombie zombie);
     }
 }

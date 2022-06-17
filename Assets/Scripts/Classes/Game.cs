@@ -7,8 +7,8 @@ namespace Classes
 {
     public class Game : IGame
     {
-        public List<ISurvivor> iPlayers = new List<ISurvivor>();
-        
+        public List<ISurvivor> Survivors = new List<ISurvivor>();
+        public List<IZombie> Zombies = new List<IZombie>();
         public bool isFinish;
         public LevelEnum level = LevelEnum.Blue;
         public List<string> history = new List<string>();
@@ -16,7 +16,7 @@ namespace Classes
 
         private bool IsNameExist(ISurvivor player)
         {
-            foreach (ISurvivor item in iPlayers)
+            foreach (ISurvivor item in Survivors)
             {
                 if (item.ReturnName() == player.ReturnName())
                 {
@@ -29,7 +29,7 @@ namespace Classes
         public void AddSurvivor(ISurvivor survivor)
         {
             if (IsNameExist(survivor)) return;
-            iPlayers.Add(survivor);
+            Survivors.Add(survivor);
             AddNewPlayerHistory(survivor);
             
         }
@@ -48,7 +48,7 @@ namespace Classes
         private void CheckIfAllSurvivorDie()
         {
             var alives = 0;
-            foreach (ISurvivor survivor in iPlayers)
+            foreach (ISurvivor survivor in Survivors)
             {
                 if (!survivor.CheckIfIsAlive()) continue;
                 if (level != survivor.ReturnLevel())
@@ -74,7 +74,7 @@ namespace Classes
         private void CheckMaxLevel()
         {
             float maxExp = 0;
-            foreach (ISurvivor survivor in iPlayers)
+            foreach (ISurvivor survivor in Survivors)
             {
                 if (survivor.CheckExperience() <= maxExp) continue;
                 maxExp = survivor.CheckExperience();
@@ -117,5 +117,19 @@ namespace Classes
             return "12:35";
         }
 
+        public List<ISurvivor> ReturnAllSurvivors()
+        {
+            return Survivors;
+        }
+
+        public List<IZombie> ReturnAllZombies()
+        {
+            return Zombies;
+        }
+
+        public void AddZombie(IZombie zombie)
+        {
+            Zombies.Add(zombie);
+        }
     }
 }

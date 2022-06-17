@@ -11,5 +11,6 @@ namespace Scenes.MainGame.MVP
         void AddZombie();
         void FillSelectedSurvivor(string returnName, string returnLevel);
         void AddSurvivorGUI(string returnName);
+        void FillSelectedZombie(string characterNameValue, string toString);
     }
 }

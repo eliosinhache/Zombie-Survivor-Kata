@@ -25,13 +25,17 @@ namespace Scenes.MainGame.MVP
         [SerializeField] private GameObject _zombieViewContainer;
         [SerializeField] private TextMeshProUGUI _selectedSurvivorName;
         [SerializeField] private TextMeshProUGUI _selectedsurvivorLevel;
+        [SerializeField] private TextMeshProUGUI _selectedZombieName;
+        [SerializeField] private TextMeshProUGUI _selectedZombieLevel;
 
         [SerializeField]
         private CharacterData _SurvivorData;
 
+        [SerializeField] private CharacterData _zombieData;
+
         public void Start()
         {
-            _mainGamePresenter = new MainGamePresenter(this, _SurvivorData);
+            _mainGamePresenter = new MainGamePresenter(this, _SurvivorData, _zombieData);
             _mainGamePresenter.StartGame();
         }
 
@@ -61,6 +65,7 @@ namespace Scenes.MainGame.MVP
         public void AddZombie()
         {
             GameObject newCharacter = Instantiate(_zombiePrefab, _zombieViewContainer.transform);
+            newCharacter.name = "zombieDefault";
             _zombieControllers.Add(newCharacter.GetComponent<ZombieCharacterView>());
             _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieCharacterView>());
         }
@@ -79,12 +84,25 @@ namespace Scenes.MainGame.MVP
             _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorCharacterView>());
         }
 
+        public void FillSelectedZombie(string zombieName, string zombieLevel)
+        {
+            _selectedZombieName.text = $"{zombieName}";
+            _selectedZombieLevel.text = $"{zombieLevel}";
+        }
+
         public void ASurvivorWasSelectedManually(string survivorName)
         {
-            // ISurvivor local = survivor.GetComponent<ISurvivor>();
             _mainGamePresenter.ASurvivorWasSelected(survivorName);
-            // _SurvivorData.characterName.Value = local.ReturnName();
-            // _SurvivorData.characterLevel.Value = local.ReturnLevel().ToString();
+        }
+
+        public void AZombieWasSelectedManually(string zombieName)
+        {
+            _mainGamePresenter.AZombieWasSelected(zombieName);
+        }
+        
+        public void AttackZombie()
+        {
+            _mainGamePresenter.SurvivorAttackAZombie();
         }
     }
 }

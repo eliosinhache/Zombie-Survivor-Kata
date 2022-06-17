@@ -31,7 +31,7 @@ namespace Tests
         public void StarWithoutSurvivor()
         {
             
-            Assert.AreEqual(0, _game.iPlayers.Count);
+            Assert.AreEqual(0, _game.Survivors.Count);
         }
         
         [Test]
@@ -39,7 +39,7 @@ namespace Tests
         {
             _game.AddSurvivor(_survivor01);
             
-            Assert.Positive(_game.iPlayers.Count);
+            Assert.Positive(_game.Survivors.Count);
         }
         
         [Test]
@@ -48,7 +48,7 @@ namespace Tests
             _game.AddSurvivor(_survivor01);
             _game.AddSurvivor(_survivor01);
             
-            Assert.AreEqual(1, _game.iPlayers.Count);
+            Assert.AreEqual(1, _game.Survivors.Count);
         }
         
         [Test]
@@ -68,6 +68,26 @@ namespace Tests
             _game.AddSurvivor(_survivor01);
             
             Assert.IsFalse(_game.isFinish);
+        }
+
+        [Test]
+        public void AddZombies()
+        {
+            IZombie zombie = new Zombie();
+            _game.AddZombie(zombie);
+            
+            Assert.AreEqual(1, _game.ReturnAllZombies().Count);
+        }
+
+        [Test]
+        public void ReturnAllSurvivors()
+        {
+            _survivor01.ReturnName().Returns("Juan");
+            _survivor02.ReturnName().Returns("Pedro");
+            _game.AddSurvivor(_survivor01);
+            _game.AddSurvivor(_survivor02);
+            
+            Assert.AreEqual(2, _game.ReturnAllSurvivors().Count);
         }
         [Test]
         public void StartWithBlueLevel()
