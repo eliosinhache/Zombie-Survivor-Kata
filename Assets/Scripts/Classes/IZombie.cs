@@ -6,5 +6,7 @@
         void GiveExperienceToKiller(ISurvivor entity);
         LevelEnum ReturnLevel();
         string ReturnName();
+        void DealDamage(ISurvivor survivor);
+        void SetName(string name);
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
+using Classes;
 using ScriptableObject;
 using TMPro;
 using UnityEngine;
 
 namespace Scenes.MainGame
 {
-    public class SurvivorCharacterView: CharacterView
+    public class SurvivorCharacterView: CharacterView, IObserver
     {
         [SerializeField] private TextMeshProUGUI _experience;
-        [SerializeField] private CharacterData _characterData;
+        [SerializeField] private CharacterData _selectedSurvivorData;
         public void SetExperience(float checkExperience)
         {
             _experience.text = $"Exp: {checkExperience}";
@@ -16,8 +17,15 @@ namespace Scenes.MainGame
 
         public void SetNameView(string name)
         {
-            _characterData.characterName.Value = name;
+            _selectedSurvivorData.characterName.Value = name;
         }
 
+        public void ReceiveUpdate()
+        {
+            if (_selectedSurvivorData.characterName.Value == name)
+            {
+                DecreaseLife(_lifes.Count - _selectedSurvivorData.lifes);
+            }
+        }
     }
 }

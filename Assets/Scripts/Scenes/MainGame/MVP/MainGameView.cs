@@ -62,12 +62,9 @@ namespace Scenes.MainGame.MVP
             _mainGamePresenter.CreateSurvivor(name);
         }
 
-        public void AddZombie()
+        public void AddZombie(string zombieName)
         {
-            GameObject newCharacter = Instantiate(_zombiePrefab, _zombieViewContainer.transform);
-            newCharacter.name = "zombieDefault";
-            _zombieControllers.Add(newCharacter.GetComponent<ZombieCharacterView>());
-            _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieCharacterView>());
+            _mainGamePresenter.CreateZombie();
         }
 
         public void FillSelectedSurvivor(string survivorName, string survivorLevel)
@@ -82,6 +79,15 @@ namespace Scenes.MainGame.MVP
             newCharacter.name = name;
             _survivorControllers.Add(newCharacter.GetComponent<SurvivorCharacterView>());
             _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorCharacterView>());
+            _mainGamePresenter.SubscribeNewSurvivorToData(newCharacter.GetComponent<SurvivorCharacterView>());
+        }
+        public void AddZombieGUI(string name)
+        {
+            GameObject newCharacter = Instantiate(_zombiePrefab, _zombieViewContainer.transform);
+            newCharacter.name = name;
+            _zombieControllers.Add(newCharacter.GetComponent<ZombieCharacterView>());
+            _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieCharacterView>());
+            _mainGamePresenter.SubscribeNewZombieToData(newCharacter.GetComponent<ZombieCharacterView>());
         }
 
         public void FillSelectedZombie(string zombieName, string zombieLevel)
@@ -103,6 +109,10 @@ namespace Scenes.MainGame.MVP
         public void AttackZombie()
         {
             _mainGamePresenter.SurvivorAttackAZombie();
+        }
+        public void AttackSurvivor()
+        {
+            _mainGamePresenter.ZombieAttackASurvivor();
         }
     }
 }

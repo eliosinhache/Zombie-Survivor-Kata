@@ -4,6 +4,7 @@ using System.Linq;
 using Classes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scenes.MainGame
 {
@@ -12,7 +13,9 @@ namespace Scenes.MainGame
         [SerializeField] protected TextMeshProUGUI _Level;
         [SerializeField] protected GameObject _survivorHeartConteinter;
         [SerializeField] protected GameObject _heartImage;
-        private List<GameObject> _lifes = new List<GameObject>();
+        [SerializeField] protected TextMeshProUGUI _name;
+        [SerializeField] protected Image _characterImage;
+        protected List<GameObject> _lifes = new List<GameObject>();
 
         public void SetLevel(string level)
         {
@@ -35,6 +38,12 @@ namespace Scenes.MainGame
             {
                 Destroy(_lifes.First().gameObject);
                 _lifes.RemoveAt(0);
+                amoung--;
+            }
+
+            if (_lifes.Count == 0)
+            {
+                _characterImage.color = Color.black;
             }
         }
         

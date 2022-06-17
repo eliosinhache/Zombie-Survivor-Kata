@@ -117,6 +117,12 @@ namespace Tests
             _survivor.DealDamage(_zombie);
             _zombie.Received(1).ReceiveDamage(_survivor);
         }
+
+        [Test]
+        public void StartWithLife()
+        {
+            Assert.AreEqual(2, _survivor.ReturnLifes());
+        }
         
         [Test]
         public void BeAbleToGainExperience()

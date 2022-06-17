@@ -9,8 +9,12 @@ namespace Scenes.MainGame.MVP
         void SetInfoSurvivor(SurvivorCharacterView survivorCharacterController);
         void SetInfoZombie(ZombieCharacterView zombieCharacterController);
         void CreateSurvivor(string nmeSurvivor);
+        void CreateZombie();
         void ASurvivorWasSelected(String survivor);
         void AZombieWasSelected(string zombieName);
         void SurvivorAttackAZombie();
+        void SubscribeNewZombieToData(ZombieCharacterView getComponent);
+        void SubscribeNewSurvivorToData(SurvivorCharacterView getComponent);
+        void ZombieAttackASurvivor();
     }
 }

@@ -83,6 +83,11 @@ namespace Classes
             zombie.ReceiveDamage(this);
         }
 
+        public int ReturnLifes()
+        {
+            return 2 - wounds;
+        }
+
         public void GainExperience(float amount)
         {
             experience += amount;

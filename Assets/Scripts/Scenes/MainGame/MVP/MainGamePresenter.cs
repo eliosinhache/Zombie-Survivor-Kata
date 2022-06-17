@@ -21,6 +21,7 @@ public class MainGamePresenter : IMainGamePresenter
     private CharacterData _selectedSurvivor;
     private CharacterData _selectedZombie;
     private ReactiveProperty<StringReactiveProperty> _nameSelected;
+    private int _numOfZombie=0;
 
     public MainGamePresenter(IMainGameView mainGameView, CharacterData survivorData, CharacterData zombieData)
     {
@@ -43,12 +44,22 @@ public class MainGamePresenter : IMainGamePresenter
         CreateSurvivor("Marian");
         CreateZombie();
     }
-
-    private void CreateZombie()
+    public void CreateSurvivor(string nameSurvivor)
+    {
+        _survivor = new Survivor(nameSurvivor, _game, new SkillTree());
+        if (CanAddSurvivorWithName(nameSurvivor))
+        {
+            _game.AddSurvivor(_survivor);
+            _mainGameView.AddSurvivorGUI(_survivor.ReturnName());
+        }
+    }
+    public void CreateZombie()
     {
         _zombie = new Zombie();
+        _zombie.SetName($"zombieN {_numOfZombie}");
         _game.AddZombie(_zombie);
-        _mainGameView.AddZombie();
+        _mainGameView.AddZombieGUI(_zombie.ReturnName());
+        _numOfZombie++;
     }
 
     public void SetInfoSurvivor(SurvivorCharacterView characterViewCharacter)
@@ -65,15 +76,7 @@ public class MainGamePresenter : IMainGamePresenter
         zombieCharacterController.SetLife(1);
     }
 
-    public void CreateSurvivor(string nameSurvivor)
-    {
-        _survivor = new Survivor(nameSurvivor, _game, new SkillTree());
-        if (CanAddSurvivorWithName(nameSurvivor))
-        {
-            _game.AddSurvivor(_survivor);
-            _mainGameView.AddSurvivorGUI(_survivor.ReturnName());
-        }
-    }
+    
 
     private bool CanAddSurvivorWithName(string nameSurvivor)
     {
@@ -99,10 +102,32 @@ public class MainGamePresenter : IMainGamePresenter
         _survivorContainter[_game.ReturnAllSurvivors().IndexOf(_survivor)].SetExperience(_survivor.CheckExperience());
         _survivorContainter[_game.ReturnAllSurvivors().IndexOf(_survivor)].SetLevel(_survivor.ReturnLevel().ToString());
         
-        _zombieContainter[_game.ReturnAllZombies().IndexOf(_zombie)].DecreaseLife(1); //Al zombie have when receive 1 damage
+        _selectedZombie.Notify();
         
         RefreshDataSurvivorSelected(_survivor.ReturnName());
         RefreshDataZombieSelected(_zombie.ReturnName());
+    }
+
+    public void SubscribeNewZombieToData(ZombieCharacterView zombieView)
+    {
+        _selectedZombie.Attach(zombieView);
+    }
+
+    public void SubscribeNewSurvivorToData(SurvivorCharacterView survivorView)
+    {
+        _selectedSurvivor.Attach(survivorView);
+    }
+
+    public void ZombieAttackASurvivor()
+    {
+        _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
+        _zombie = SearchZombieWithName(_selectedZombie.characterName.Value);
+        _zombie.DealDamage(_survivor);
+        
+        RefreshDataSurvivorSelected(_survivor.ReturnName());
+        RefreshDataZombieSelected(_zombie.ReturnName());
+        
+        _selectedSurvivor.Notify();
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)
@@ -159,6 +184,7 @@ public class MainGamePresenter : IMainGamePresenter
             {
                 _selectedSurvivor.characterLevel.Value = itemSurvivor.ReturnLevel().ToString();
                 _selectedSurvivor.characterName.Value = itemSurvivor.ReturnName();
+                _selectedSurvivor.lifes = itemSurvivor.ReturnLifes();
                 FillSelectedSurvivor();
             }
         }
