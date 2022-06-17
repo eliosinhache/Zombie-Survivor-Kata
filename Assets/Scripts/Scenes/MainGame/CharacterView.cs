@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace Scenes.MainGame
@@ -9,7 +10,7 @@ namespace Scenes.MainGame
         [SerializeField] protected GameObject _survivorHeartConteinter;
         [SerializeField] protected GameObject _heartImage;
 
-        public void Setevel(string level)
+        public void SetLevel(string level)
         {
             _Level.text = $"level: {level}";
         }
@@ -22,6 +23,7 @@ namespace Scenes.MainGame
                 lifes--;
             }
         }
+
         
     }
 }

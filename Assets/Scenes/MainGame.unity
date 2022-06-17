@@ -246,7 +246,7 @@ PrefabInstance:
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
@@ -262,6 +262,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: AddSurvivor
+      objectReference: {fileID: 0}
+    - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Jose
       objectReference: {fileID: 0}
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
@@ -3182,7 +3187,7 @@ PrefabInstance:
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
@@ -3197,7 +3202,12 @@ PrefabInstance:
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: AddSurvivor
+      value: ASurvivorWasSelectedManually
+      objectReference: {fileID: 0}
+    - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Jose
       objectReference: {fileID: 0}
     - target: {fileID: 5114095692511046402, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
@@ -3207,9 +3217,7 @@ PrefabInstance:
     - target: {fileID: 5520594287973069387, guid: bc07d3e86a83a6d4d871a3cf05387ba4,
         type: 3}
       propertyPath: m_text
-      value: 'Add Survivor
-
-'
+      value: Select Survivor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc07d3e86a83a6d4d871a3cf05387ba4, type: 3}
@@ -3680,6 +3688,9 @@ MonoBehaviour:
     type: 3}
   _survivorsViewContainer: {fileID: 629117263}
   _zombieViewContainer: {fileID: 1865906291}
+  _selectedSurvivorName: {fileID: 528579992}
+  _selectedsurvivorLevel: {fileID: 887167018}
+  _SurvivorData: {fileID: 11400000, guid: ecc5d6049e33d6a458de9bf7a83094fe, type: 2}
 --- !u!4 &1511474096
 Transform:
   m_ObjectHideFlags: 0

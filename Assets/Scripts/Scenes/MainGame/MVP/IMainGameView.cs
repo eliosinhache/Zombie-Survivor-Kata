@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Classes;
 
 namespace Scenes.MainGame.MVP
 {
@@ -6,7 +7,9 @@ namespace Scenes.MainGame.MVP
     {
         List<SurvivorCharacterView> ReturnSurvivorViews();
         List<ZombieCharacterView> ReturnZombieViews();
-        void AddSurvivor();
+        void AddSurvivor(string name);
         void AddZombie();
+        void FillSelectedSurvivor(string returnName, string returnLevel);
+        void AddSurvivorGUI(string returnName);
     }
 }

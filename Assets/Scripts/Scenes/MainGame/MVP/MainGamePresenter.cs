@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Classes;
 using Scenes.MainGame;
 using Scenes.MainGame.MVP;
+using ScriptableObject;
+using UniRx;
 using UnityEngine;
 
 public class MainGamePresenter : IMainGamePresenter
@@ -11,15 +14,26 @@ public class MainGamePresenter : IMainGamePresenter
     private ISurvivor _survivor;
     private IZombie _zombie;
     private IGame _game;
+    private List<ISurvivor> _survivorsCreated = new List<ISurvivor>();
     private List<SurvivorCharacterView> _survivorContainter;
     private List<ZombieCharacterView> _zombieContainter;
-    public MainGamePresenter(IMainGameView mainGameView)
+
+    private CharacterData selectedSurvivor;
+    private ReactiveProperty<StringReactiveProperty> _nameSelected;
+
+    public MainGamePresenter(IMainGameView mainGameView, CharacterData characterData)
     {
         _mainGameView = mainGameView;
         _game = new Game();
         _survivorContainter = _mainGameView.ReturnSurvivorViews();
         _zombieContainter = _mainGameView.ReturnZombieViews();
+        selectedSurvivor = characterData;
+        selectedSurvivor.characterName.Subscribe(item => FillSelectedSurvivor());
+    }
 
+    private void FillSelectedSurvivor()
+    {
+        _mainGameView.FillSelectedSurvivor(selectedSurvivor.characterName.Value, selectedSurvivor.characterLevel.ToString());
     }
 
     public void StartGame()
@@ -36,14 +50,15 @@ public class MainGamePresenter : IMainGamePresenter
 
     public void SetInfoSurvivor(SurvivorCharacterView characterViewCharacter)
     {
-        characterViewCharacter.Setevel(_survivor.ReturnLevel().ToString());
+        characterViewCharacter.SetLevel(_survivor.ReturnLevel().ToString());
         characterViewCharacter.SetExperience(_survivor.CheckExperience());
         characterViewCharacter.SetLife(2);
+        characterViewCharacter.SetNameView(characterViewCharacter.name);
     }
 
     public void SetInfoZombie(ZombieCharacterView zombieCharacterController)
     {
-        zombieCharacterController.Setevel(_zombie.ReturnLevel().ToString());
+        zombieCharacterController.SetLevel(_zombie.ReturnLevel().ToString());
         zombieCharacterController.SetLife(1);
     }
 
@@ -51,7 +66,25 @@ public class MainGamePresenter : IMainGamePresenter
     {
         _survivor = new Survivor(nmeSurvivor, _game, new SkillTree());
         _game.AddSurvivor(_survivor);
-        _mainGameView.AddSurvivor();
+        _survivorsCreated.Add(_survivor);
+        _mainGameView.AddSurvivorGUI(_survivor.ReturnName());
     }
 
+    public void ASurvivorWasSelected(string survivor)
+    {
+        RefreshDataSurvivorSelected(survivor);
+    }
+
+    private void RefreshDataSurvivorSelected(string survivor)
+    {
+        foreach (ISurvivor itemSurvivor in _survivorsCreated)
+        {
+            if (itemSurvivor.ReturnName() == survivor)
+            {
+                selectedSurvivor.characterLevel.Value = itemSurvivor.ReturnLevel().ToString();
+                selectedSurvivor.characterName.Value = itemSurvivor.ReturnName();
+                FillSelectedSurvivor();
+            }
+        }
+    }
 }
