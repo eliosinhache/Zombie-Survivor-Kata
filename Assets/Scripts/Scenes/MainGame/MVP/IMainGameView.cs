@@ -13,5 +13,7 @@ namespace Scenes.MainGame.MVP
         void AddSurvivorGUI(string returnName);
         void AddZombieGUI(string name);
         void FillSelectedZombie(string characterNameValue, string toString);
+        void WriteLog(string log);
+        void ShowHistoryOnDebug(List<string> histoyry);
     }
 }

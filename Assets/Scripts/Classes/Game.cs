@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NSubstitute;
 using UniRx;
 
@@ -125,6 +126,11 @@ namespace Classes
         public List<IZombie> ReturnAllZombies()
         {
             return Zombies;
+        }
+
+        public List<string> returnCompleteHistory()
+        {
+            return history;
         }
 
         public void AddZombie(IZombie zombie)

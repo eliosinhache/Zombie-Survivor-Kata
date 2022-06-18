@@ -31,7 +31,6 @@ public class MainGamePresenter : IMainGamePresenter
         _zombieContainter = _mainGameView.ReturnZombieViews();
         _selectedSurvivor = survivorData;
         _selectedZombie = zombieData;
-        // _selectedSurvivor.characterName.Subscribe(item => FillSelectedSurvivor());
     }
 
     private void FillSelectedSurvivor()
@@ -128,6 +127,11 @@ public class MainGamePresenter : IMainGamePresenter
         RefreshDataZombieSelected(_zombie.ReturnName());
         
         _selectedSurvivor.Notify();
+    }
+
+    public void ReadHistory()
+    {
+        _mainGameView.ShowHistoryOnDebug(_game.returnCompleteHistory());
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)

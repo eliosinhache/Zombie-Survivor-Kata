@@ -12,5 +12,6 @@ namespace Classes
         List<ISurvivor> ReturnAllSurvivors();
         void AddZombie(IZombie zombie);
         List<IZombie> ReturnAllZombies();
+        List<string> returnCompleteHistory();
     }
 }

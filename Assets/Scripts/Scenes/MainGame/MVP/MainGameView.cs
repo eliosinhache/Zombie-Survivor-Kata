@@ -49,14 +49,6 @@ namespace Scenes.MainGame.MVP
         {
             return _zombieControllers;
         }
-
-        // public void AddSurvivor(string name)
-        // {
-        //     GameObject newCharacter = Instantiate(_survivorPrefab, _survivorsViewContainer.transform);
-        //     newCharacter.name = name;
-        //     _survivorControllers.Add(newCharacter.GetComponent<SurvivorCharacterView>());
-        //     _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorCharacterView>());
-        // }
         public void AddSurvivor(string name)
         {
             _mainGamePresenter.CreateSurvivor(name);
@@ -94,6 +86,25 @@ namespace Scenes.MainGame.MVP
         {
             _selectedZombieName.text = $"{zombieName}";
             _selectedZombieLevel.text = $"{zombieLevel}";
+        }
+
+        public void ReadHistory()
+        {
+            _mainGamePresenter.ReadHistory();
+        }
+
+        public void WriteLog(string log)
+        {
+            Debug.LogWarning(log);
+        }
+
+        public void ShowHistoryOnDebug(List<string> histoyry)
+        {
+            Debug.ClearDeveloperConsole();
+            foreach (string log in histoyry)
+            {
+                Debug.Log(log);
+            }
         }
 
         public void ASurvivorWasSelectedManually(string survivorName)

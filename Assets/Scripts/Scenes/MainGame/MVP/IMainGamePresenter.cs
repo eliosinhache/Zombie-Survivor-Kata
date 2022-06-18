@@ -16,5 +16,6 @@ namespace Scenes.MainGame.MVP
         void SubscribeNewZombieToData(ZombieCharacterView getComponent);
         void SubscribeNewSurvivorToData(SurvivorCharacterView getComponent);
         void ZombieAttackASurvivor();
+        void ReadHistory();
     }
 }
