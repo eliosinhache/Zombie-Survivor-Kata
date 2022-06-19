@@ -15,5 +15,7 @@ namespace Scenes.MainGame.MVP
         void FillSelectedZombie(string characterNameValue, string toString);
         void WriteLog(string log);
         void ShowHistoryOnDebug(List<string> histoyry);
+        void SuccessfullyEquippedInReserve(string equipment);
+        void SuccessfullyEquippedInHand(string equipment);
     }
 }

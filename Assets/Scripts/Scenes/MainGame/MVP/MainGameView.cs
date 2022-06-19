@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Classes;
 using ScriptableObject;
 using TMPro;
@@ -27,15 +28,15 @@ namespace Scenes.MainGame.MVP
         [SerializeField] private TextMeshProUGUI _selectedsurvivorLevel;
         [SerializeField] private TextMeshProUGUI _selectedZombieName;
         [SerializeField] private TextMeshProUGUI _selectedZombieLevel;
+        [SerializeField] private EquipmentView[] _equipments = new EquipmentView[5];
 
-        [SerializeField]
-        private CharacterData _SurvivorData;
-
+        [SerializeField] private CharacterData _SurvivorData;
         [SerializeField] private CharacterData _zombieData;
+        [SerializeField] private EquipmentData _equipmentData;
 
         public void Start()
         {
-            _mainGamePresenter = new MainGamePresenter(this, _SurvivorData, _zombieData);
+            _mainGamePresenter = new MainGamePresenter(this, _SurvivorData, _zombieData, _equipmentData);
             _mainGamePresenter.StartGame();
         }
 
@@ -107,6 +108,28 @@ namespace Scenes.MainGame.MVP
             }
         }
 
+        public void SuccessfullyEquippedInReserve(string equipment)
+        {
+            foreach (EquipmentView item in _equipments)
+            {
+                if (item.transform.name == equipment)
+                {
+                    item.SuccefullyEquippedInReserve();
+                }
+            }
+        }
+
+        public void SuccessfullyEquippedInHand(string equipment)
+        {
+            foreach (EquipmentView item in _equipments)
+            {
+                if (item.transform.name == equipment)
+                {
+                    item.SuccefullyEquippedInHand();
+                }
+            }
+        }
+
         public void ASurvivorWasSelectedManually(string survivorName)
         {
             _mainGamePresenter.ASurvivorWasSelected(survivorName);
@@ -124,6 +147,15 @@ namespace Scenes.MainGame.MVP
         public void AttackSurvivor()
         {
             _mainGamePresenter.ZombieAttackASurvivor();
+        }
+
+        public void EquippateInReserve(string equipment)
+        {
+            _mainGamePresenter.EquipateInReserve(equipment);
+        }
+        public void EquippateInHand(string equipment)
+        {
+            _mainGamePresenter.EquipateInHand(equipment);
         }
     }
 }

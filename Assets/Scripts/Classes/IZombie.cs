@@ -8,5 +8,7 @@
         string ReturnName();
         void DealDamage(ISurvivor survivor);
         void SetName(string name);
+
+        bool IsAlive();
     }
 }

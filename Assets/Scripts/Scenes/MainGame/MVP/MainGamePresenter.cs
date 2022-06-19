@@ -20,10 +20,11 @@ public class MainGamePresenter : IMainGamePresenter
 
     private CharacterData _selectedSurvivor;
     private CharacterData _selectedZombie;
+    private EquipmentData _equipmentData;
     private ReactiveProperty<StringReactiveProperty> _nameSelected;
     private int _numOfZombie=0;
 
-    public MainGamePresenter(IMainGameView mainGameView, CharacterData survivorData, CharacterData zombieData)
+    public MainGamePresenter(IMainGameView mainGameView, CharacterData survivorData, CharacterData zombieData, EquipmentData equipment)
     {
         _mainGameView = mainGameView;
         _game = new Game();
@@ -31,6 +32,7 @@ public class MainGamePresenter : IMainGamePresenter
         _zombieContainter = _mainGameView.ReturnZombieViews();
         _selectedSurvivor = survivorData;
         _selectedZombie = zombieData;
+        _equipmentData = equipment;
     }
 
     private void FillSelectedSurvivor()
@@ -96,6 +98,7 @@ public class MainGamePresenter : IMainGamePresenter
     {
         _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
         _zombie = SearchZombieWithName(_selectedZombie.characterName.Value);
+        if (_survivor == null || _zombie == null) {return; }
         _survivor.DealDamage(_zombie);
 
         _survivorContainter[_game.ReturnAllSurvivors().IndexOf(_survivor)].SetExperience(_survivor.CheckExperience());
@@ -132,6 +135,25 @@ public class MainGamePresenter : IMainGamePresenter
     public void ReadHistory()
     {
         _mainGameView.ShowHistoryOnDebug(_game.returnCompleteHistory());
+    }
+
+    public void EquipateInReserve(string equipment)
+    {
+        _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
+        Equipment newEquipment = new Equipment(equipment);
+        _survivor.Equipate(newEquipment, "In Reserve");
+        _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Reserve");
+        _mainGameView.SuccessfullyEquippedInReserve(equipment);
+        // _mainGameView.SuccessfullyEquippedInReserve(_survivor.ReturnAllEquipment());
+    }
+
+    public void EquipateInHand(string equipment)
+    {
+        _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
+        Equipment newEquipment = new Equipment(equipment);
+        _survivor.Equipate(newEquipment, "In Hand");
+        _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Hand");
+        _mainGameView.SuccessfullyEquippedInHand(equipment);
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)

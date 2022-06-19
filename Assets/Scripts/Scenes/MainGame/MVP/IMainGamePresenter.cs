@@ -17,5 +17,7 @@ namespace Scenes.MainGame.MVP
         void SubscribeNewSurvivorToData(SurvivorCharacterView getComponent);
         void ZombieAttackASurvivor();
         void ReadHistory();
+        void EquipateInReserve(string equipment);
+        void EquipateInHand(string equipment);
     }
 }
