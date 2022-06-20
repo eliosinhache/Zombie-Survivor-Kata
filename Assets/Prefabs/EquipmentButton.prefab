@@ -357,6 +357,7 @@ MonoBehaviour:
   _view: {fileID: 0}
   _equipmentImage: {fileID: 1224622308430769695}
   _optionPanel: {fileID: 8991497694746129931}
+  _equipmentSelected: {fileID: 11400000, guid: 3e6b66caed8c3e64094e51471e6beed8, type: 2}
 --- !u!114 &7771972644441180197
 MonoBehaviour:
   m_ObjectHideFlags: 0

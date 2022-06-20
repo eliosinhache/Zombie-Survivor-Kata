@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Classes
 {
     public interface ISurvivor
@@ -12,5 +14,6 @@ namespace Classes
         void Equipate(Equipment equipment, string typeOfEquipment);
         void DealDamage(IZombie zombie);
         int ReturnLifes();
+        List<Equipment> ReturnAllEquipment();
     }
 }

@@ -27,5 +27,10 @@ namespace Scenes.MainGame
                 DecreaseLife(_lifes.Count - _selectedSurvivorData.lifes);
             }
         }
+
+        protected override void CharacterDie()
+        {
+            _characterImage.color = Color.black;
+        }
     }
 }

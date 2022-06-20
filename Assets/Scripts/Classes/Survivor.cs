@@ -88,6 +88,11 @@ namespace Classes
             return 2 - wounds;
         }
 
+        public List<Equipment> ReturnAllEquipment()
+        {
+            return equipment;
+        }
+
         public void GainExperience(float amount)
         {
             experience += amount;

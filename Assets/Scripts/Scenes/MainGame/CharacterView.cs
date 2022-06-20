@@ -43,9 +43,10 @@ namespace Scenes.MainGame
 
             if (_lifes.Count == 0)
             {
-                _characterImage.color = Color.black;
+                CharacterDie();
             }
         }
-        
+
+        protected abstract void CharacterDie();
     }
 }

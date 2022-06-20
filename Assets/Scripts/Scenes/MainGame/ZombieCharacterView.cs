@@ -15,5 +15,10 @@ namespace Scenes.MainGame
                 DecreaseLife(_lifes.Count - _zombieSelectedData.lifes);
             }
         }
+
+        protected override void CharacterDie()
+        {
+            _characterImage.color = Color.black;
+        }
     }
 }

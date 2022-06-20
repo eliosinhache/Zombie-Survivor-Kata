@@ -28,7 +28,7 @@ namespace Scenes.MainGame.MVP
         [SerializeField] private TextMeshProUGUI _selectedsurvivorLevel;
         [SerializeField] private TextMeshProUGUI _selectedZombieName;
         [SerializeField] private TextMeshProUGUI _selectedZombieLevel;
-        [SerializeField] private EquipmentView[] _equipments = new EquipmentView[5];
+        [SerializeField] private EquipmentView[] _equipments = new EquipmentView[6];
 
         [SerializeField] private CharacterData _SurvivorData;
         [SerializeField] private CharacterData _zombieData;
@@ -108,26 +108,9 @@ namespace Scenes.MainGame.MVP
             }
         }
 
-        public void SuccessfullyEquippedInReserve(string equipment)
+        public EquipmentView[] ReturnEquipmentViewList()
         {
-            foreach (EquipmentView item in _equipments)
-            {
-                if (item.transform.name == equipment)
-                {
-                    item.SuccefullyEquippedInReserve();
-                }
-            }
-        }
-
-        public void SuccessfullyEquippedInHand(string equipment)
-        {
-            foreach (EquipmentView item in _equipments)
-            {
-                if (item.transform.name == equipment)
-                {
-                    item.SuccefullyEquippedInHand();
-                }
-            }
+            return _equipments;
         }
 
         public void ASurvivorWasSelectedManually(string survivorName)

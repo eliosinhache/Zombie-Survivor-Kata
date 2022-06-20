@@ -33,6 +33,15 @@ public class MainGamePresenter : IMainGamePresenter
         _selectedSurvivor = survivorData;
         _selectedZombie = zombieData;
         _equipmentData = equipment;
+        SubscribeEquipmentViewToData();
+    }
+
+    private void SubscribeEquipmentViewToData()
+    {
+        foreach (EquipmentView view in _mainGameView.ReturnEquipmentViewList())
+        {
+            _equipmentData.Attach(view);
+        }
     }
 
     private void FillSelectedSurvivor()
@@ -143,8 +152,13 @@ public class MainGamePresenter : IMainGamePresenter
         Equipment newEquipment = new Equipment(equipment);
         _survivor.Equipate(newEquipment, "In Reserve");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Reserve");
-        _mainGameView.SuccessfullyEquippedInReserve(equipment);
-        // _mainGameView.SuccessfullyEquippedInReserve(_survivor.ReturnAllEquipment());
+        RefreshDataEquipmentOfSurvivorSelected(_survivor);
+        // _mainGameView.SuccessfullyEquippedInReserve(equipment);
+    }
+
+    private void RefreshDataEquipmentOfSurvivorSelected(ISurvivor survivor)
+    {
+        _equipmentData.RefreshEquipment(survivor.CheckIfIsAlive() ? survivor.ReturnAllEquipment() : new List<Equipment>());
     }
 
     public void EquipateInHand(string equipment)
@@ -153,7 +167,8 @@ public class MainGamePresenter : IMainGamePresenter
         Equipment newEquipment = new Equipment(equipment);
         _survivor.Equipate(newEquipment, "In Hand");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Hand");
-        _mainGameView.SuccessfullyEquippedInHand(equipment);
+        RefreshDataEquipmentOfSurvivorSelected(_survivor);
+        // _mainGameView.SuccessfullyEquippedInHand(equipment);
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)
@@ -211,7 +226,8 @@ public class MainGamePresenter : IMainGamePresenter
                 _selectedSurvivor.characterLevel.Value = itemSurvivor.ReturnLevel().ToString();
                 _selectedSurvivor.characterName.Value = itemSurvivor.ReturnName();
                 _selectedSurvivor.lifes = itemSurvivor.ReturnLifes();
-                FillSelectedSurvivor();
+                RefreshDataEquipmentOfSurvivorSelected(itemSurvivor);
+                FillSelectedSurvivor(); //cambiar a reactividad de CharacterDAta
             }
         }
     }
