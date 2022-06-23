@@ -7,7 +7,11 @@ namespace Classes
         int UnlockedSkills();
         int EnabledSkills(LevelEnum level);
         int LockedSkills();
-        void UnlockSkill(Skill skillToUnlock, int experience);
+        void UnlockSkill(ISkill skillToUnlock, int survivorExperience);
         List<Skill> AvaibleSkillsToUnlock(LevelEnum level);
+        void AddNewSkill(ISkill skill);
+        int ReturnSkillsOfLevel(LevelEnum orange);
+        void AddNewLevelSkills(ILevelSkills levelSkills);
+        List<ISkill> ListOfUnlockedSkills();
     }
 }

@@ -56,6 +56,7 @@ public class MainGamePresenter : IMainGamePresenter
     }
     public void CreateSurvivor(string nameSurvivor)
     {
+        SkillTree skillTree = CreateInitialSkillTree();
         _survivor = new Survivor(nameSurvivor, _game, new SkillTree());
         if (CanAddSurvivorWithName(nameSurvivor))
         {
@@ -63,6 +64,18 @@ public class MainGamePresenter : IMainGamePresenter
             _mainGameView.AddSurvivorGUI(_survivor.ReturnName());
         }
     }
+
+    private SkillTree CreateInitialSkillTree()
+    {
+        ISkill skill = new Skill("+1 Action",  LevelEnum.Yellow, 7);
+        skill = new Skill("+1 Die", LevelEnum.Orange, 18);
+        skill = new Skill("+1 Free Move Action", LevelEnum.Orange, 18);
+        skill = new Skill("Hoard", LevelEnum.Red, 42);
+        skill = new Skill("Tough", LevelEnum.Red, 42);
+        skill = new Skill("Sniper", LevelEnum.Red, 42);
+        return new SkillTree();
+    }
+
     public void CreateZombie()
     {
         _zombie = new Zombie();
@@ -149,11 +162,11 @@ public class MainGamePresenter : IMainGamePresenter
     public void EquipateInReserve(string equipment)
     {
         _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
+        if (_survivor == null) {return;}
         Equipment newEquipment = new Equipment(equipment);
         _survivor.Equipate(newEquipment, "In Reserve");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Reserve");
         RefreshDataEquipmentOfSurvivorSelected(_survivor);
-        // _mainGameView.SuccessfullyEquippedInReserve(equipment);
     }
 
     private void RefreshDataEquipmentOfSurvivorSelected(ISurvivor survivor)
@@ -164,11 +177,11 @@ public class MainGamePresenter : IMainGamePresenter
     public void EquipateInHand(string equipment)
     {
         _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
+        if (_survivor == null) {return;}
         Equipment newEquipment = new Equipment(equipment);
         _survivor.Equipate(newEquipment, "In Hand");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Hand");
         RefreshDataEquipmentOfSurvivorSelected(_survivor);
-        // _mainGameView.SuccessfullyEquippedInHand(equipment);
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)

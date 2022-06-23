@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Survivor
   m_EditorClassIdentifier: 
   characterName:
-    value: Elio
+    value: Jose
   characterLevel:
-    value: 
+    value: Blue
+  lifes: 0
