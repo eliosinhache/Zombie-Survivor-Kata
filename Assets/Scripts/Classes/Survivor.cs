@@ -140,7 +140,7 @@ namespace Classes
 
         public int UnlockedSkills()
         {
-            return _skillTree.UnlockedSkills();
+            return _skillTree.NumberUnlockedSkills();
         }
     }
 }

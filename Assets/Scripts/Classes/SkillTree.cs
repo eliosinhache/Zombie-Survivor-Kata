@@ -56,7 +56,7 @@ namespace Classes
         }
 
 
-        public int UnlockedSkills ()
+        public int NumberUnlockedSkills ()
         {
             return _levelSkills.Sum(levelSkill => levelSkill.CountOfUnlockedSkills());
         }
@@ -77,29 +77,16 @@ namespace Classes
             if (IsExperienceEnoughToUnlockNewSkill(survivorExperience)) { UnlockSkill(unlockSkill);}
         }
 
-        public List<Skill> AvaibleSkillsToUnlock(LevelEnum level)
+        public List<ISkill> AvaibleSkillsToUnlock(LevelEnum level)
         {
-            List<Skill> availableSkillsToUnlock = new List<Skill>();
-            switch (level)
+            List<ISkill> availableSkillsToUnlock = new List<ISkill>();
+
+            foreach (ILevelSkills levelSkill in _levelSkills)  
             {
-                case LevelEnum.Yellow:
-                    foreach (Skill skill in _levelYellowSkills)
-                    {
-                        if (!skill.isUnlock) {availableSkillsToUnlock.Add(skill);}
-                    }
-                    break;
-                case LevelEnum.Orange:
-                    foreach (Skill skill in _levelOrangeSkills)
-                    {
-                        if (!skill.isUnlock) { availableSkillsToUnlock.Add(skill);}
-                    }
-                    break;
-                case LevelEnum.Red:
-                    foreach (Skill skill in _levelRedSkills)
-                    {
-                        if (!skill.isUnlock) {availableSkillsToUnlock.Add(skill);}
-                    }
-                    break;
+                if (levelSkill.ReturnLevelSkills() == level)
+                {
+                    availableSkillsToUnlock = levelSkill.ReturnListOfSkillsToUnlock();
+                }
             }
 
             return availableSkillsToUnlock;
@@ -109,24 +96,28 @@ namespace Classes
         {
             if (experience >= 7 && experience < 18)
             {
-                return UnlockedSkills() < 1;
+                return NumberUnlockedSkills() < 1;
             }
             if (experience >= 18 && experience < 42)
             {
-                return UnlockedSkills() < 2;
+                return NumberUnlockedSkills() < 2;
             }
-            if (experience >= 42 && experience < 61) {return UnlockedSkills() < 3;}
+
+            if (experience >= 42 && experience < 61)
+            {
+                return NumberUnlockedSkills() < 3;
+            }
 
             if (experience >= 61 && experience < 86)
             {
-                return UnlockedSkills() < 4;
+                return NumberUnlockedSkills() < 4;
             }
             if (experience >= 86 && experience < 129)
             {
-                return UnlockedSkills() < 5;
+                return NumberUnlockedSkills() < 5;
             }
 
-            return UnlockedSkills() < 6;
+            return NumberUnlockedSkills() < 6;
         }
 
         private void UnlockSkill(ISkill unlockSkill)

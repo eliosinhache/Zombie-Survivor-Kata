@@ -54,5 +54,16 @@ namespace Classes
         {
             return _skills.FindAll(x => x.IsUnlock());
         }
+
+        public List<ISkill> ReturnListOfSkillsToUnlock()
+        {
+            List<ISkill> SkillsToUnlock = new List<ISkill>();
+            foreach (ISkill skill in _skills)
+            {
+                if (!skill.IsUnlock()) { SkillsToUnlock.Add(skill);}
+            }
+
+            return SkillsToUnlock;
+        }
     }
 }

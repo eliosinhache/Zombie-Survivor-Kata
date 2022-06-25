@@ -11,5 +11,6 @@ namespace Classes
         int CountOfUnlockedSkills();
         int CountOfLockedSkills();
         IEnumerable<ISkill> ReturnListOfUnlockedSkills();
+        List<ISkill> ReturnListOfSkillsToUnlock();
     }
 }

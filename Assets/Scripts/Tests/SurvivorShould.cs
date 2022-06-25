@@ -173,7 +173,7 @@ namespace Tests
         [Test]
         public void StartWithLockedSkills()
         {
-            _skillTree.UnlockedSkills().Returns(0);
+            _skillTree.NumberUnlockedSkills().Returns(0);
             Assert.AreEqual(0, _survivor.UnlockedSkills());
         }
 
