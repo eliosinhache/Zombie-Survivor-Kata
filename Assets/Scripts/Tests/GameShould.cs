@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Linq;
 using Classes;
+using Classes.Character;
+using Classes.GameLogic;
+using Classes.Level;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;

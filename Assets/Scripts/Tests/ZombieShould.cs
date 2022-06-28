@@ -1,4 +1,6 @@
 ﻿using Classes;
+using Classes.Character;
+using Classes.Level;
 using NSubstitute;
 using NUnit.Framework;
 

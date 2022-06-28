@@ -1,4 +1,8 @@
 ﻿using Classes;
+using Classes.Character;
+using Classes.GameLogic;
+using Classes.Level;
+using Classes.Skill;
 using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
@@ -133,6 +137,7 @@ namespace Tests
         public void BeAbleToGainExperience()
         {
             _survivor.experience = 4;
+            
             _survivor.GainExperience(1);
             
             Assert.AreEqual(5, _survivor.experience);
@@ -147,6 +152,7 @@ namespace Tests
             _survivor.experience = experience;
             _survivor.level = actualLevel;
             _levelUpRules.CanLevelUp(Arg.Any<int>(), Arg.Any<LevelEnum>()).Returns(true);
+            
             _survivor.GainExperience(1);
             
             Assert.AreEqual(nextLevel, _survivor.level);
@@ -165,15 +171,6 @@ namespace Tests
         {
             _skillTree.NumberUnlockedSkills().Returns(0);
             Assert.AreEqual(0, _survivor.UnlockedSkills());
-        }
-
-        [Test]
-        public void UnlockSkillWhenLevelUpToYellow()
-        {
-            _survivor.experience = 6;
-            _survivor.GainExperience(1);
-            
-            // _skillTree.Received(1).UnlockSkill();
         }
         
     }

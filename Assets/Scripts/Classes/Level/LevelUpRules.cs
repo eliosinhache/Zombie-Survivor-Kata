@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Classes
+﻿namespace Classes.Level
 {
     public class LevelUpRules : ILevelUpRules
     {

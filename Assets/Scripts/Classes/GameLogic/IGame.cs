@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Classes.Character;
 
-namespace Classes
+namespace Classes.GameLogic
 {
     public interface IGame
     {

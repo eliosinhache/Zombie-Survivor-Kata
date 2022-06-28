@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Classes.Level;
 
-namespace Classes
+namespace Classes.Skill
 {
     public class SkillTree : ISkillTree
     {

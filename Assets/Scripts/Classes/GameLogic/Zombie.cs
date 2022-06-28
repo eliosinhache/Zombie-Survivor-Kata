@@ -1,4 +1,6 @@
-﻿namespace Classes
+﻿using Classes.Level;
+
+namespace Classes.Character
 {
     public class Zombie : IZombie
     {

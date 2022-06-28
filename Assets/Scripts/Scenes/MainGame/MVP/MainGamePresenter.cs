@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Classes;
+using Classes.Character;
+using Classes.GameLogic;
+using Classes.Level;
+using Classes.Skill;
 using Scenes.MainGame;
 using Scenes.MainGame.MVP;
 using ScriptableObject;

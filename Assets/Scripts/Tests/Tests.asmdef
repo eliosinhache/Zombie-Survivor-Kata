@@ -3,7 +3,12 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Classes"
+        "Classes",
+        "CharacterAssembly",
+        "RulesAssembly",
+        "GameAssembly",
+        "OtherAssembly",
+        "SkillAssembly"
     ],
     "includePlatforms": [
         "Editor"

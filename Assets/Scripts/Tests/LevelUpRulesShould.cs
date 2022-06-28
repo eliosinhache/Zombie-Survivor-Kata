@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Classes;
+using Classes.Level;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;

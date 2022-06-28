@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using NSubstitute;
-using UniRx;
+using Classes.Character;
+using Classes.Level;
 
-namespace Classes
+namespace Classes.GameLogic
 {
     public class Game : IGame
     {

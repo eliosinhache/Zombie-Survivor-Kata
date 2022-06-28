@@ -1,7 +1,8 @@
 ﻿
 using System.Collections.Generic;
+using Classes.Level;
 
-namespace Classes
+namespace Classes.Character
 {
     public interface ISurvivor
     {

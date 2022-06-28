@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using Classes.GameLogic;
+using Classes.Level;
+using Classes.Skill;
 using UnityEngine;
 
-namespace Classes
+namespace Classes.Character
 {
     public class Survivor : ISurvivor
     {
