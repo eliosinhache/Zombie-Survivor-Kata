@@ -747,7 +747,6 @@ MonoBehaviour:
   _survivorHeartConteinter: {fileID: 562001558179685712}
   _heartImage: {fileID: 2054562936054060530, guid: 88f2c029c686b4f4883fb2c2cc092dab,
     type: 3}
-  _name: {fileID: 0}
   _characterImage: {fileID: 6065148523885242982}
   _experience: {fileID: 6065148524736937897}
   _selectedSurvivorData: {fileID: 11400000, guid: ecc5d6049e33d6a458de9bf7a83094fe,

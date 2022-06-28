@@ -13,7 +13,7 @@ namespace Scenes.MainGame
         [SerializeField] protected TextMeshProUGUI _Level;
         [SerializeField] protected GameObject _survivorHeartConteinter;
         [SerializeField] protected GameObject _heartImage;
-        [SerializeField] protected TextMeshProUGUI _name;
+        // [SerializeField] protected TextMeshProUGUI _name;
         [SerializeField] protected Image _characterImage;
         protected List<GameObject> _lifes = new List<GameObject>();
 

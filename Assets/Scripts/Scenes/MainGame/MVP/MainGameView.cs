@@ -70,6 +70,7 @@ namespace Scenes.MainGame.MVP
         {
             GameObject newCharacter = Instantiate(_survivorPrefab, _survivorsViewContainer.transform);
             newCharacter.name = name;
+            newCharacter.GetComponent<SurvivorCharacterView>().SetGameView(this);
             _survivorControllers.Add(newCharacter.GetComponent<SurvivorCharacterView>());
             _mainGamePresenter.SetInfoSurvivor(newCharacter.GetComponent<SurvivorCharacterView>());
             _mainGamePresenter.SubscribeNewSurvivorToData(newCharacter.GetComponent<SurvivorCharacterView>());
@@ -78,6 +79,7 @@ namespace Scenes.MainGame.MVP
         {
             GameObject newCharacter = Instantiate(_zombiePrefab, _zombieViewContainer.transform);
             newCharacter.name = name;
+            newCharacter.GetComponent<ZombieCharacterView>().SetGameView(this);
             _zombieControllers.Add(newCharacter.GetComponent<ZombieCharacterView>());
             _mainGamePresenter.SetInfoZombie(newCharacter.GetComponent<ZombieCharacterView>());
             _mainGamePresenter.SubscribeNewZombieToData(newCharacter.GetComponent<ZombieCharacterView>());
