@@ -21,5 +21,25 @@ namespace Tests
         {
             Assert.AreEqual(countOfSkillsAvailable, _levelUpRules.CountOfSkillsAvailableToUnlock(experience));
         }
+
+        [Test]
+        [TestCase(LevelEnum.Blue, LevelEnum.Yellow)]
+        [TestCase(LevelEnum.Yellow, LevelEnum.Orange)]
+        [TestCase(LevelEnum.Orange, LevelEnum.Red)]
+        [TestCase(LevelEnum.Red, LevelEnum.Blue)]
+        public void RetrieveNextLevelToLevelUp(LevelEnum actualLevel, LevelEnum nextLevel)
+        {
+            
+            Assert.AreEqual(nextLevel, _levelUpRules.LevelUp(actualLevel));
+        }
+
+        [Test]
+        [TestCase(7, LevelEnum.Blue)]
+        [TestCase(19, LevelEnum.Yellow)]
+        [TestCase(43, LevelEnum.Orange)]
+        public void VerifyIfCanLevelUp(int experience, LevelEnum actualLevel)
+        {
+            Assert.IsTrue(_levelUpRules.CanLevelUp(experience, actualLevel));
+        }
     }
 }

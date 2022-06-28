@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace Classes
 {
@@ -122,21 +123,9 @@ namespace Classes
 
         private void CheckLevel()
         {
-            // switch (experience)
-            // {
-            //     case 6:
-            //         level = LevelEnum.Yellow;
-            //         _game.ASurvivorLevelUp(this);
-            //         break;
-            //     case 18:
-            //             level = LevelEnum.Orange;
-            //             _game.ASurvivorLevelUp(this);
-            //             break;
-            //     case 42:
-            //             level = LevelEnum.Red;
-            //             _game.ASurvivorLevelUp(this);
-            //             break;
-            // }
+            if (!_levelUpRules.CanLevelUp(Mathf.RoundToInt(experience), level)) return;
+            level = _levelUpRules.LevelUp(level);
+            _game.ASurvivorLevelUp(this);
         }
 
         public int UnlockedSkills()

@@ -8,14 +8,19 @@ namespace Tests
     public class SurvivorShould
     {
         private Survivor _survivor;
-        private ISkillTree _skillTree = Substitute.For<ISkillTree>();
+        private ISkillTree _skillTree ;
         private Equipment _equipmentBaseballBat;
         private Equipment _equipmentKatana;
-        private IGame _game = Substitute.For<IGame>();
-        private IZombie _zombie = Substitute.For<IZombie>();
+        private IGame _game ;
+        private IZombie _zombie;
+        private ILevelUpRules _levelUpRules;
         [SetUp]
         public void SetUp()
         {
+            _zombie = Substitute.For<IZombie>();
+            _levelUpRules = Substitute.For<ILevelUpRules>();
+            _game = Substitute.For<IGame>();
+            _skillTree = Substitute.For<ISkillTree>();
             _survivor = new Survivor("Juan", _game, _skillTree);
             _equipmentBaseballBat = new Equipment("Baseball bat");
             _equipmentKatana = new Equipment("Katana");
@@ -134,33 +139,18 @@ namespace Tests
         }
         
         [Test]
-        public void LevelUpToYellowWhenHaveSixExperience()
+        [TestCase(6, LevelEnum.Blue, LevelEnum.Yellow)]
+        [TestCase(18, LevelEnum.Yellow, LevelEnum.Orange)]
+        [TestCase(42, LevelEnum.Orange, LevelEnum.Red)]
+        public void LevelUpWhenHaveEnoughExperience(int experience, LevelEnum actualLevel, LevelEnum nextLevel)
         {
-            _survivor.experience = 6;
+            _survivor.experience = experience;
+            _survivor.level = actualLevel;
+            _levelUpRules.CanLevelUp(Arg.Any<int>(), Arg.Any<LevelEnum>()).Returns(true);
             _survivor.GainExperience(1);
             
-            Assert.AreEqual(LevelEnum.Yellow, _survivor.level);
+            Assert.AreEqual(nextLevel, _survivor.level);
         }
-        
-        [Test]
-        public void LevelUpToOrangeWhenHaveEighteenExperience()
-        {
-            _survivor.experience = 17;
-
-            _survivor.GainExperience(1);
-            
-            Assert.AreEqual(LevelEnum.Orange, _survivor.level);
-        }
-        [Test]
-        public void LevelUpToRedWhenHaveFortyTwoExperience()
-        {
-            _survivor.experience = 41;
-
-            _survivor.GainExperience(1);
-            
-            Assert.AreEqual(LevelEnum.Red, _survivor.level);
-        }
-
         [Test]
         public void NotifyToGameThatLevelUp()
         {
