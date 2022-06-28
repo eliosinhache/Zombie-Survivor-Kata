@@ -5,9 +5,9 @@
         public string name;
         public string equiped;
 
-        public Equipment(string equipamentName)
+        public Equipment(string equipmentName)
         {
-            name = equipamentName;
+            name = equipmentName;
             equiped = "In Reserve";
         }
     }

@@ -11,9 +11,9 @@ namespace Classes
         void ReceiveWound();
         float CheckExperience();
         LevelEnum ReturnLevel();
-        void Equipate(Equipment equipment, string typeOfEquipment);
+        void Equip(Equipment equipment, string typeOfEquipment);
         void DealDamage(IZombie zombie);
-        int ReturnLifes();
+        int RetrieveLifes();
         List<Equipment> ReturnAllEquipment();
     }
 }

@@ -4,8 +4,8 @@
     {
         void ReceiveDamage(ISurvivor entity);
         void GiveExperienceToKiller(ISurvivor entity);
-        LevelEnum ReturnLevel();
-        string ReturnName();
+        LevelEnum RetrieveLevel();
+        string RetrieveName();
         void DealDamage(ISurvivor survivor);
         void SetName(string name);
 

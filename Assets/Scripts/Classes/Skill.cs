@@ -2,19 +2,19 @@
 {
     public class Skill : ISkill
     {
-        public string description;
-        public LevelEnum lvlToUnlock;
-        private int _minExperienceNeeded;
+        public readonly string description;
+        private readonly LevelEnum _lvlToUnlock;
+        private readonly int _minExperienceNeeded;
         public bool isUnlock;
         public Skill(string description, LevelEnum levelToUnlock, int minExperienceNeeded)
         {
             this.description = description;
-            lvlToUnlock = levelToUnlock;
+            _lvlToUnlock = levelToUnlock;
             _minExperienceNeeded = minExperienceNeeded;
         }
-        public LevelEnum ReturnLevelSkill()
+        public LevelEnum RetrieveLevelSkill()
         {
-            return lvlToUnlock;
+            return _lvlToUnlock;
         }
 
         public int MinExperienceNeeded()

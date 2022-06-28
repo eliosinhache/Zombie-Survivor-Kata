@@ -7,19 +7,19 @@ namespace Classes
     public class LevelSkills : ILevelSkills
     {
         private List<ISkill> _skills = new List<ISkill>();
-        private LevelEnum _level;
+        private readonly LevelEnum _level;
 
         public LevelSkills(LevelEnum levelListOf)
         {
             _level = levelListOf;
         }
         
-        public LevelEnum ReturnLevelSkills()
+        public LevelEnum RetrieveLevelSkills()
         {
             return _level;
         }
 
-        public int ReturnCountOfSkills()
+        public int RetrieveCountOfSkills()
         {
             return _skills.Count;
         }
@@ -50,12 +50,12 @@ namespace Classes
             return _skills.Count(x => !x.IsUnlock());
         }
 
-        public IEnumerable<ISkill> ReturnListOfUnlockedSkills()
+        public IEnumerable<ISkill> RetrieveListOfUnlockedSkills()
         {
             return _skills.FindAll(x => x.IsUnlock());
         }
 
-        public List<ISkill> ReturnListOfSkillsToUnlock()
+        public List<ISkill> RetrieveListOfSkillsToUnlock()
         {
             List<ISkill> SkillsToUnlock = new List<ISkill>();
             foreach (ISkill skill in _skills)

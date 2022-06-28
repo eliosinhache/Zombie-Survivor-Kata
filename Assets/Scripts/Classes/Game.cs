@@ -8,29 +8,22 @@ namespace Classes
 {
     public class Game : IGame
     {
-        public List<ISurvivor> Survivors = new List<ISurvivor>();
-        public List<IZombie> Zombies = new List<IZombie>();
+        private readonly List<ISurvivor> _survivors = new List<ISurvivor>();
+        private readonly List<IZombie> _zombies = new List<IZombie>();
+        public readonly List<string> history = new List<string>();
         public bool isFinish;
         public LevelEnum level = LevelEnum.Blue;
-        public List<string> history = new List<string>();
 
 
         private bool IsNameExist(ISurvivor player)
         {
-            foreach (ISurvivor item in Survivors)
-            {
-                if (item.ReturnName() == player.ReturnName())
-                {
-                    return true;
-                }
-            }
-            return false;
+            return _survivors.Any(item => item.ReturnName() == player.ReturnName());
         }
 
         public void AddSurvivor(ISurvivor survivor)
         {
             if (IsNameExist(survivor)) return;
-            Survivors.Add(survivor);
+            _survivors.Add(survivor);
             AddNewPlayerHistory(survivor);
             
         }
@@ -48,22 +41,19 @@ namespace Classes
 
         private void CheckIfAllSurvivorDie()
         {
-            var alives = 0;
-            foreach (ISurvivor survivor in Survivors)
+            var alive = 0;
+            foreach (var survivor in _survivors.Where(survivor => survivor.CheckIfIsAlive()))
             {
-                if (!survivor.CheckIfIsAlive()) continue;
                 if (level != survivor.ReturnLevel())
                 {
                     RecordGameLevelChanged();
                 }
-                alives += 1;
+                alive += 1;
             }
 
-            if (alives == 0)
-            {
-                isFinish = true;
-                RecordHistory("Game Over: all survivor die");
-            }
+            if (alive != 0) return;
+            isFinish = true;
+            RecordHistory("Game Over: all survivor die");
         }
 
         public void ASurvivorLevelUp(ISurvivor survivor)
@@ -75,15 +65,12 @@ namespace Classes
         private void CheckMaxLevel()
         {
             float maxExp = 0;
-            foreach (ISurvivor survivor in Survivors)
+            foreach (var survivor in _survivors.Where(survivor => !(survivor.CheckExperience() <= maxExp)))
             {
-                if (survivor.CheckExperience() <= maxExp) continue;
                 maxExp = survivor.CheckExperience();
-                if (level != survivor.ReturnLevel())
-                {
-                    level = survivor.ReturnLevel();
-                    RecordGameLevelChanged();
-                }
+                if (level == survivor.ReturnLevel()) continue;
+                level = survivor.ReturnLevel();
+                RecordGameLevelChanged();
             }
         }
 
@@ -118,24 +105,29 @@ namespace Classes
             return "12:35";
         }
 
-        public List<ISurvivor> ReturnAllSurvivors()
+        public List<ISurvivor> RetrieveAllSurvivors()
         {
-            return Survivors;
+            return _survivors;
         }
 
-        public List<IZombie> ReturnAllZombies()
+        public List<IZombie> RetrieveAllZombies()
         {
-            return Zombies;
+            return _zombies;
         }
 
-        public List<string> returnCompleteHistory()
+        public List<string> RetrieveCompleteHistory()
         {
             return history;
         }
 
         public void AddZombie(IZombie zombie)
         {
-            Zombies.Add(zombie);
+            _zombies.Add(zombie);
+        }
+
+        public List<ISurvivor> ListOfSurvivors()
+        {
+            return _survivors;
         }
     }
 }

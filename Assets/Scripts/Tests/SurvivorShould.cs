@@ -60,10 +60,10 @@ namespace Tests
         [Test]
         public void HaveTwoEquipmentInHand()
         {
-            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentKatana, "In Hand");
             
             
             Assert.AreEqual(2, _survivor.EquipmentInHand());
@@ -72,13 +72,13 @@ namespace Tests
         [Test]
         public void HaveMaxOfEquipmentInReserve()
         {
-            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Hand");
             
             Assert.AreEqual(5, _survivor.equipment.Count);
         }
@@ -86,15 +86,15 @@ namespace Tests
         [Test]
         public void HaveOneLessPiecesWhenReceiveWound()
         {
-            _survivor.Equipate(_equipmentBaseballBat, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Hand");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentBaseballBat, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Hand");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
             
             _survivor.ReceiveWound();
             
-            _survivor.Equipate(_equipmentKatana, "In Reserve");
+            _survivor.Equip(_equipmentKatana, "In Reserve");
             
             Assert.AreEqual(4, _survivor.equipment.Count);
         }
@@ -121,7 +121,7 @@ namespace Tests
         [Test]
         public void StartWithLife()
         {
-            Assert.AreEqual(2, _survivor.ReturnLifes());
+            Assert.AreEqual(2, _survivor.RetrieveLifes());
         }
         
         [Test]
@@ -136,7 +136,7 @@ namespace Tests
         [Test]
         public void LevelUpToYellowWhenHaveSixExperience()
         {
-            _survivor.experience = 5;
+            _survivor.experience = 6;
             _survivor.GainExperience(1);
             
             Assert.AreEqual(LevelEnum.Yellow, _survivor.level);

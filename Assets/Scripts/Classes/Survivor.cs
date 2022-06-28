@@ -8,6 +8,7 @@ namespace Classes
     {
         private IGame _game;
         private ISkillTree _skillTree;
+        private ILevelUpRules _levelUpRules = new LevelUpRules();
         public string name;
         public int wounds;
         public bool isAlive;
@@ -48,7 +49,7 @@ namespace Classes
             equipment.Capacity -= 1;
         }
 
-        public void Equipate(Equipment equipment, string typeOfEquipment)
+        public void Equip(Equipment equipment, string typeOfEquipment)
         {
             if (CanNotEquipateNewEquipment(typeOfEquipment) ){ return; }
 
@@ -83,7 +84,7 @@ namespace Classes
             zombie.ReceiveDamage(this);
         }
 
-        public int ReturnLifes()
+        public int RetrieveLifes()
         {
             return 2 - wounds;
         }
@@ -121,21 +122,21 @@ namespace Classes
 
         private void CheckLevel()
         {
-            switch (experience)
-            {
-                case 6:
-                    level = LevelEnum.Yellow;
-                    _game.ASurvivorLevelUp(this);
-                    break;
-                case 18:
-                        level = LevelEnum.Orange;
-                        _game.ASurvivorLevelUp(this);
-                        break;
-                case 42:
-                        level = LevelEnum.Red;
-                        _game.ASurvivorLevelUp(this);
-                        break;
-            }
+            // switch (experience)
+            // {
+            //     case 6:
+            //         level = LevelEnum.Yellow;
+            //         _game.ASurvivorLevelUp(this);
+            //         break;
+            //     case 18:
+            //             level = LevelEnum.Orange;
+            //             _game.ASurvivorLevelUp(this);
+            //             break;
+            //     case 42:
+            //             level = LevelEnum.Red;
+            //             _game.ASurvivorLevelUp(this);
+            //             break;
+            // }
         }
 
         public int UnlockedSkills()

@@ -4,13 +4,13 @@ namespace Classes
 {
     public interface ILevelSkills
     {
-        LevelEnum ReturnLevelSkills();
-        int ReturnCountOfSkills();
+        LevelEnum RetrieveLevelSkills();
+        int RetrieveCountOfSkills();
         void AddNewSkill(ISkill skill);
         void UnlockSkill(ISkill unlockSkill);
         int CountOfUnlockedSkills();
         int CountOfLockedSkills();
-        IEnumerable<ISkill> ReturnListOfUnlockedSkills();
-        List<ISkill> ReturnListOfSkillsToUnlock();
+        IEnumerable<ISkill> RetrieveListOfUnlockedSkills();
+        List<ISkill> RetrieveListOfSkillsToUnlock();
     }
 }

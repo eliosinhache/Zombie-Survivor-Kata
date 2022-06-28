@@ -17,12 +17,12 @@
             entity.GainExperience(1);
         }
 
-        public LevelEnum ReturnLevel()
+        public LevelEnum RetrieveLevel()
         {
             return level;
         }
 
-        public string ReturnName()
+        public string RetrieveName()
         {
             return name;
         }

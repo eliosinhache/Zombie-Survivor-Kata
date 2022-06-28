@@ -6,30 +6,29 @@ namespace Classes
 {
     public class SkillTree : ISkillTree
     {
-        private List<ILevelSkills> _levelSkills = new List<ILevelSkills>();
-        private List<Skill> _levelYellowSkills = new List<Skill>();
-        private List<Skill> _levelOrangeSkills = new List<Skill>();
-        private List<Skill> _levelRedSkills = new List<Skill>();
-        
+        private readonly List<ILevelSkills> _levelSkills = new List<ILevelSkills>();
+        private readonly ILevelUpRules _levelUpRules;
+
+        public SkillTree(ILevelUpRules levelUpRules)
+        {
+            _levelUpRules = levelUpRules;
+        }
         public void AddNewSkill (ISkill skill)
         {
-            foreach (ILevelSkills levelSkill in _levelSkills)
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == skill.RetrieveLevelSkill()))
             {
-                if (levelSkill.ReturnLevelSkills() == skill.ReturnLevelSkill())
-                {
-                    levelSkill.AddNewSkill(skill);
-                }
+                levelSkill.AddNewSkill(skill);
             }
         }
 
-        public int ReturnSkillsOfLevel(LevelEnum level)
+        public int RetrieveSkillsOfLevel(LevelEnum level)
         {
-            int count = 0;
+            var count = 0;
             foreach (ILevelSkills levelSkill in _levelSkills)
             {
-                if (levelSkill.ReturnLevelSkills() == level)
+                if (levelSkill.RetrieveLevelSkills() == level)
                 {
-                    count += levelSkill.ReturnCountOfSkills();
+                    count += levelSkill.RetrieveCountOfSkills();
                 }
             }
 
@@ -43,17 +42,14 @@ namespace Classes
 
         public List<ISkill> ListOfUnlockedSkills()
         {
-            List<ISkill> unlockedSkills = new List<ISkill>();
+            var unlockedSkills = new List<ISkill>();
             foreach (ILevelSkills levelSkills in _levelSkills)
             {
-                foreach (ISkill skill in levelSkills.ReturnListOfUnlockedSkills())
-                {
-                    unlockedSkills.Add(skill);
-                }
+                unlockedSkills.AddRange(levelSkills.RetrieveListOfUnlockedSkills());
             }
-
             return unlockedSkills;
         }
+
 
 
         public int NumberUnlockedSkills ()
@@ -67,7 +63,7 @@ namespace Classes
 
         public int LockedSkills()
         {
-            int count = CountOfLockedSkills();
+            var count = CountOfLockedSkills();
             return count;
         }
 
@@ -77,16 +73,13 @@ namespace Classes
             if (IsExperienceEnoughToUnlockNewSkill(survivorExperience)) { UnlockSkill(unlockSkill);}
         }
 
-        public List<ISkill> AvaibleSkillsToUnlock(LevelEnum level)
+        public List<ISkill> AvailableSkillsToUnlock(LevelEnum level)
         {
             List<ISkill> availableSkillsToUnlock = new List<ISkill>();
 
-            foreach (ILevelSkills levelSkill in _levelSkills)  
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == level))
             {
-                if (levelSkill.ReturnLevelSkills() == level)
-                {
-                    availableSkillsToUnlock = levelSkill.ReturnListOfSkillsToUnlock();
-                }
+                availableSkillsToUnlock = levelSkill.RetrieveListOfSkillsToUnlock();
             }
 
             return availableSkillsToUnlock;
@@ -94,82 +87,37 @@ namespace Classes
 
         private bool IsExperienceEnoughToUnlockNewSkill(int experience)
         {
-            if (experience >= 7 && experience < 18)
-            {
-                return NumberUnlockedSkills() < 1;
-            }
-            if (experience >= 18 && experience < 42)
-            {
-                return NumberUnlockedSkills() < 2;
-            }
-
-            if (experience >= 42 && experience < 61)
-            {
-                return NumberUnlockedSkills() < 3;
-            }
-
-            if (experience >= 61 && experience < 86)
-            {
-                return NumberUnlockedSkills() < 4;
-            }
-            if (experience >= 86 && experience < 129)
-            {
-                return NumberUnlockedSkills() < 5;
-            }
-
-            return NumberUnlockedSkills() < 6;
+            return NumberUnlockedSkills() < _levelUpRules.CountOfSkillsAvailableToUnlock(experience);
         }
 
         private void UnlockSkill(ISkill unlockSkill)
         {
-            foreach (ILevelSkills levelSkill in _levelSkills)
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == unlockSkill.RetrieveLevelSkill()))
             {
-                if (levelSkill.ReturnLevelSkills() == unlockSkill.ReturnLevelSkill())
-                {
-                    levelSkill.UnlockSkill(unlockSkill);
-                }
+                levelSkill.UnlockSkill(unlockSkill);
             }
         }
 
         private void SearchAndUnlockSkill(Skill unlockSkill, List<Skill> levelSkills)
         {
-            foreach (Skill skill in levelSkills)
+            foreach (var skill in levelSkills.Where(skill => skill.description == unlockSkill.description))
             {
-                if (skill.description == unlockSkill.description)
-                {
-                    skill.isUnlock = true;
-                }
+                skill.isUnlock = true;
             }
         }
 
         private int CountOfLockedSkills()
         {
-            int count = 0;
-            foreach (ILevelSkills levelSkills in _levelSkills)
-            {
-                count += levelSkills.CountOfLockedSkills();
-            }
-            return count;
+            return _levelSkills.Sum(levelSkills => levelSkills.CountOfLockedSkills());
         }
 
         private int SearchCountOfSkillsPerLevel(LevelEnum level)
         {
-            int count = 0;
-            switch (level)
+            var count = 0;
+            foreach (var levelSkills in _levelSkills.Where(levelSkills => levelSkills.RetrieveLevelSkills() == level))
             {
-                case LevelEnum.Blue:
-                    count = 0;
-                    break;
-                case LevelEnum.Yellow:
-                    count += _levelYellowSkills.Count(item => !item.isUnlock);
-                    break;
-                case LevelEnum.Orange:
-                    count += _levelOrangeSkills.Count(item => !item.isUnlock);
-                    break;
-                case LevelEnum.Red:
-                    count += _levelRedSkills.Count(item =>  !item.isUnlock);
-                    break;
-            } 
+                count = levelSkills.RetrieveCountOfSkills();
+            }
             return count;
         }
     }

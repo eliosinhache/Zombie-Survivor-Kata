@@ -2,7 +2,7 @@
 {
     public interface ISkill
     {
-        LevelEnum ReturnLevelSkill();
+        LevelEnum RetrieveLevelSkill();
         int MinExperienceNeeded();
         void Unlock();
         bool IsUnlock();

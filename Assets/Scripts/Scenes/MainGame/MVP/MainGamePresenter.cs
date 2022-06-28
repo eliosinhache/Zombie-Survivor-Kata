@@ -15,6 +15,7 @@ public class MainGamePresenter : IMainGamePresenter
     private ISurvivor _survivor;
     private IZombie _zombie;
     private IGame _game;
+    private ILevelUpRules _levelUpRules = new LevelUpRules();
     private List<SurvivorCharacterView> _survivorContainter;
     private List<ZombieCharacterView> _zombieContainter;
 
@@ -57,7 +58,7 @@ public class MainGamePresenter : IMainGamePresenter
     public void CreateSurvivor(string nameSurvivor)
     {
         SkillTree skillTree = CreateInitialSkillTree();
-        _survivor = new Survivor(nameSurvivor, _game, new SkillTree());
+        _survivor = new Survivor(nameSurvivor, _game, new SkillTree(_levelUpRules));
         if (CanAddSurvivorWithName(nameSurvivor))
         {
             _game.AddSurvivor(_survivor);
@@ -73,7 +74,7 @@ public class MainGamePresenter : IMainGamePresenter
         skill = new Skill("Hoard", LevelEnum.Red, 42);
         skill = new Skill("Tough", LevelEnum.Red, 42);
         skill = new Skill("Sniper", LevelEnum.Red, 42);
-        return new SkillTree();
+        return new SkillTree(_levelUpRules);
     }
 
     public void CreateZombie()
@@ -81,7 +82,7 @@ public class MainGamePresenter : IMainGamePresenter
         _zombie = new Zombie();
         _zombie.SetName($"zombieN {_numOfZombie}");
         _game.AddZombie(_zombie);
-        _mainGameView.AddZombieGUI(_zombie.ReturnName());
+        _mainGameView.AddZombieGUI(_zombie.RetrieveName());
         _numOfZombie++;
     }
 
@@ -95,7 +96,7 @@ public class MainGamePresenter : IMainGamePresenter
 
     public void SetInfoZombie(ZombieCharacterView zombieCharacterController)
     {
-        zombieCharacterController.SetLevel(_zombie.ReturnLevel().ToString());
+        zombieCharacterController.SetLevel(_zombie.RetrieveLevel().ToString());
         zombieCharacterController.SetLife(1);
     }
 
@@ -103,7 +104,7 @@ public class MainGamePresenter : IMainGamePresenter
 
     private bool CanAddSurvivorWithName(string nameSurvivor)
     {
-        return !_game.ReturnAllSurvivors().Exists(survivor => survivor.ReturnName() == nameSurvivor);
+        return !_game.RetrieveAllSurvivors().Exists(survivor => survivor.ReturnName() == nameSurvivor);
     }
 
     public void ASurvivorWasSelected(string survivor)
@@ -123,13 +124,13 @@ public class MainGamePresenter : IMainGamePresenter
         if (_survivor == null || _zombie == null) {return; }
         _survivor.DealDamage(_zombie);
 
-        _survivorContainter[_game.ReturnAllSurvivors().IndexOf(_survivor)].SetExperience(_survivor.CheckExperience());
-        _survivorContainter[_game.ReturnAllSurvivors().IndexOf(_survivor)].SetLevel(_survivor.ReturnLevel().ToString());
+        _survivorContainter[_game.RetrieveAllSurvivors().IndexOf(_survivor)].SetExperience(_survivor.CheckExperience());
+        _survivorContainter[_game.RetrieveAllSurvivors().IndexOf(_survivor)].SetLevel(_survivor.ReturnLevel().ToString());
         
         _selectedZombie.Notify();
         
         RefreshDataSurvivorSelected(_survivor.ReturnName());
-        RefreshDataZombieSelected(_zombie.ReturnName());
+        RefreshDataZombieSelected(_zombie.RetrieveName());
     }
 
     public void SubscribeNewZombieToData(ZombieCharacterView zombieView)
@@ -149,14 +150,14 @@ public class MainGamePresenter : IMainGamePresenter
         _zombie.DealDamage(_survivor);
         
         RefreshDataSurvivorSelected(_survivor.ReturnName());
-        RefreshDataZombieSelected(_zombie.ReturnName());
+        RefreshDataZombieSelected(_zombie.RetrieveName());
         
         _selectedSurvivor.Notify();
     }
 
     public void ReadHistory()
     {
-        _mainGameView.ShowHistoryOnDebug(_game.returnCompleteHistory());
+        _mainGameView.ShowHistoryOnDebug(_game.RetrieveCompleteHistory());
     }
 
     public void EquipateInReserve(string equipment)
@@ -164,7 +165,7 @@ public class MainGamePresenter : IMainGamePresenter
         _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
         if (_survivor == null) {return;}
         Equipment newEquipment = new Equipment(equipment);
-        _survivor.Equipate(newEquipment, "In Reserve");
+        _survivor.Equip(newEquipment, "In Reserve");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Reserve");
         RefreshDataEquipmentOfSurvivorSelected(_survivor);
     }
@@ -179,16 +180,16 @@ public class MainGamePresenter : IMainGamePresenter
         _survivor = SearchSurvivorWithName(_selectedSurvivor.characterName.Value);
         if (_survivor == null) {return;}
         Equipment newEquipment = new Equipment(equipment);
-        _survivor.Equipate(newEquipment, "In Hand");
+        _survivor.Equip(newEquipment, "In Hand");
         _game.ASurvivorEquippedAWeapon(_survivor, newEquipment, "In Hand");
         RefreshDataEquipmentOfSurvivorSelected(_survivor);
     }
 
     private IZombie SearchZombieWithName(string selectedZombieName)
     {
-        foreach (IZombie itemZombie in _game.ReturnAllZombies())
+        foreach (IZombie itemZombie in _game.RetrieveAllZombies())
         {
-            if (itemZombie.ReturnName() == selectedZombieName )
+            if (itemZombie.RetrieveName() == selectedZombieName )
             {
                 return itemZombie;
             }
@@ -199,7 +200,7 @@ public class MainGamePresenter : IMainGamePresenter
 
     private ISurvivor SearchSurvivorWithName(string selectedSurvivorName)
     {
-        foreach (ISurvivor itemSurvivor in _game.ReturnAllSurvivors())
+        foreach (ISurvivor itemSurvivor in _game.RetrieveAllSurvivors())
         {
             if (itemSurvivor.ReturnName() == selectedSurvivorName)
             {
@@ -213,13 +214,13 @@ public class MainGamePresenter : IMainGamePresenter
     private void RefreshDataZombieSelected(string zombieName)
     {
         bool existAny = false;
-        foreach (IZombie itemZombie in _game.ReturnAllZombies())
+        foreach (IZombie itemZombie in _game.RetrieveAllZombies())
         {
-            if (itemZombie.ReturnName() == zombieName && !existAny)
+            if (itemZombie.RetrieveName() == zombieName && !existAny)
             {
                 existAny = true;
-                _selectedZombie.characterLevel.Value = itemZombie.ReturnLevel().ToString();
-                _selectedZombie.characterName.Value = itemZombie.ReturnName();
+                _selectedZombie.characterLevel.Value = itemZombie.RetrieveLevel().ToString();
+                _selectedZombie.characterName.Value = itemZombie.RetrieveName();
                 FillSelectedZombie();
             }
         }
@@ -232,13 +233,13 @@ public class MainGamePresenter : IMainGamePresenter
 
     private void RefreshDataSurvivorSelected(string survivor)
     {
-        foreach (ISurvivor itemSurvivor in _game.ReturnAllSurvivors())
+        foreach (ISurvivor itemSurvivor in _game.RetrieveAllSurvivors())
         {
             if (itemSurvivor.ReturnName() == survivor)
             {
                 _selectedSurvivor.characterLevel.Value = itemSurvivor.ReturnLevel().ToString();
                 _selectedSurvivor.characterName.Value = itemSurvivor.ReturnName();
-                _selectedSurvivor.lifes = itemSurvivor.ReturnLifes();
+                _selectedSurvivor.lifes = itemSurvivor.RetrieveLifes();
                 RefreshDataEquipmentOfSurvivorSelected(itemSurvivor);
                 FillSelectedSurvivor(); //cambiar a reactividad de CharacterDAta
             }

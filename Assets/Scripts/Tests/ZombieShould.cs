@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Classes;
+﻿using Classes;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -24,7 +20,7 @@ namespace Tests
         [Test]
         public void HaveLevel()
         {
-            Assert.AreEqual(LevelEnum.Blue, zombie.ReturnLevel());
+            Assert.AreEqual(LevelEnum.Blue, zombie.RetrieveLevel());
         }
     }
 }

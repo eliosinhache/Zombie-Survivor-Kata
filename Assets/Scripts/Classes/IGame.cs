@@ -9,9 +9,9 @@ namespace Classes
         void ASurvivorLevelUp(ISurvivor survivor);
         void ASurvivorEquippedAWeapon(ISurvivor survivor, Equipment equipment, string typeOfEquipment);
         void ASurvivorReceiveWound(ISurvivor survivor);
-        List<ISurvivor> ReturnAllSurvivors();
+        List<ISurvivor> RetrieveAllSurvivors();
         void AddZombie(IZombie zombie);
-        List<IZombie> ReturnAllZombies();
-        List<string> returnCompleteHistory();
+        List<IZombie> RetrieveAllZombies();
+        List<string> RetrieveCompleteHistory();
     }
 }
