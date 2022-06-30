@@ -13,26 +13,20 @@ namespace Classes.Skill
         {
             _levelUpRules = levelUpRules;
         }
+        
         public void AddNewSkill (ISkill skill)
         {
-            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == skill.RetrieveLevelSkill()))
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.GetSkillsLevel() == skill.GetLevelSkill()))
             {
                 levelSkill.AddNewSkill(skill);
             }
         }
 
-        public int RetrieveSkillsOfLevel(LevelEnum level)
+        public int CountSkillsOfLevel(LevelEnum level)
         {
-            var count = 0;
-            foreach (ILevelSkills levelSkill in _levelSkills)
-            {
-                if (levelSkill.RetrieveLevelSkills() == level)
-                {
-                    count += levelSkill.RetrieveCountOfSkills();
-                }
-            }
-
-            return count;
+            return _levelSkills
+                .Where(levelSkill => levelSkill.GetSkillsLevel() == level)
+                .Sum(levelSkill => levelSkill.GetSkillsCount());
         }
 
         public void AddNewLevelSkills(ILevelSkills levelSkills)
@@ -77,7 +71,7 @@ namespace Classes.Skill
         {
             List<ISkill> availableSkillsToUnlock = new List<ISkill>();
 
-            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == level))
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.GetSkillsLevel() == level))
             {
                 availableSkillsToUnlock = levelSkill.RetrieveListOfSkillsToUnlock();
             }
@@ -92,7 +86,7 @@ namespace Classes.Skill
 
         private void UnlockSkill(ISkill unlockSkill)
         {
-            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.RetrieveLevelSkills() == unlockSkill.RetrieveLevelSkill()))
+            foreach (var levelSkill in _levelSkills.Where(levelSkill => levelSkill.GetSkillsLevel() == unlockSkill.GetLevelSkill()))
             {
                 levelSkill.UnlockSkill(unlockSkill);
             }
@@ -114,9 +108,9 @@ namespace Classes.Skill
         private int SearchCountOfSkillsPerLevel(LevelEnum level)
         {
             var count = 0;
-            foreach (var levelSkills in _levelSkills.Where(levelSkills => levelSkills.RetrieveLevelSkills() == level))
+            foreach (var levelSkills in _levelSkills.Where(levelSkills => levelSkills.GetSkillsLevel() == level))
             {
-                count = levelSkills.RetrieveCountOfSkills();
+                count = levelSkills.GetSkillsCount();
             }
             return count;
         }

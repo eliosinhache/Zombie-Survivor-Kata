@@ -14,12 +14,12 @@ namespace Classes.Skill
             _level = levelListOf;
         }
         
-        public LevelEnum RetrieveLevelSkills()
+        public LevelEnum GetSkillsLevel()
         {
             return _level;
         }
 
-        public int RetrieveCountOfSkills()
+        public int GetSkillsCount()
         {
             return _skills.Count;
         }

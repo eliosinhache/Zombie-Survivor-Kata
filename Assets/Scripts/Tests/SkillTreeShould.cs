@@ -36,10 +36,10 @@ namespace Tests
             _levelSkillsYellow = Substitute.For<ILevelSkills>();
             _levelSkillsOrange = Substitute.For<ILevelSkills>();
             _levelSkillsRed = Substitute.For<ILevelSkills>();
-            _levelSkillsBlue.RetrieveLevelSkills().Returns(LevelEnum.Blue);
-            _levelSkillsYellow.RetrieveLevelSkills().Returns(LevelEnum.Yellow);
-            _levelSkillsOrange.RetrieveLevelSkills().Returns(LevelEnum.Orange);
-            _levelSkillsRed.RetrieveLevelSkills().Returns(LevelEnum.Red);
+            _levelSkillsBlue.GetSkillsLevel().Returns(LevelEnum.Blue);
+            _levelSkillsYellow.GetSkillsLevel().Returns(LevelEnum.Yellow);
+            _levelSkillsOrange.GetSkillsLevel().Returns(LevelEnum.Orange);
+            _levelSkillsRed.GetSkillsLevel().Returns(LevelEnum.Red);
             
             _skillTree  = new SkillTree(_levelUpRules);
         }
@@ -52,7 +52,8 @@ namespace Tests
         public void AddNewSkillToCorrectList(LevelEnum levelSkill)
         {
             FillSkillTreeWithAllLevelSkills();
-            _skill01.RetrieveLevelSkill().Returns(levelSkill);
+            
+            _skill01.GetLevelSkill().Returns(levelSkill);
             
             _skillTree.AddNewSkill(_skill01);
             ILevelSkills _levelSkillsExpected = RetrieveLevelSkill(levelSkill);
@@ -110,7 +111,7 @@ namespace Tests
         public void HavePotentialSkills(LevelEnum level, int skillCount)
         {
             FillSkillTreeWithAllLevelSkills();
-            _skill01.RetrieveLevelSkill().Returns(level);
+            _skill01.GetLevelSkill().Returns(level);
             int skillToAdd = skillCount;
             while (skillToAdd > 0)
             {
@@ -145,9 +146,9 @@ namespace Tests
              
             int experience = 46;
 
-            _skill01.RetrieveLevelSkill().Returns(LevelEnum.Yellow);
+            _skill01.GetLevelSkill().Returns(LevelEnum.Yellow);
             _skill01.MinExperienceNeeded().Returns(7);
-            _skill02.RetrieveLevelSkill().Returns(LevelEnum.Red);
+            _skill02.GetLevelSkill().Returns(LevelEnum.Red);
             _skill02.MinExperienceNeeded().Returns(42);
             
             _skillTree.UnlockSkill(_skill01, experience);
@@ -161,7 +162,7 @@ namespace Tests
         public void UnlockNewSkillWhenExperienceHigherThanTreeLevel()
         {
             _skill01.MinExperienceNeeded().Returns(19);
-            _skill01.RetrieveLevelSkill().Returns(LevelEnum.Orange);
+            _skill01.GetLevelSkill().Returns(LevelEnum.Orange);
             _levelSkillsYellow.CountOfUnlockedSkills().Returns(1);
             _levelSkillsOrange.CountOfUnlockedSkills().Returns(1);
             _levelSkillsRed.CountOfUnlockedSkills().Returns(1);
@@ -179,7 +180,7 @@ namespace Tests
         public void ShowAvailableSkillToUnlock()
         {
             FillSkillTreeWithAllLevelSkills();
-            _skill01.RetrieveLevelSkill().Returns(LevelEnum.Yellow);
+            _skill01.GetLevelSkill().Returns(LevelEnum.Yellow);
             List<ISkill> expectedList = new List<ISkill> {_skill01};
             _levelSkillsYellow.RetrieveListOfSkillsToUnlock().Returns(expectedList);
             

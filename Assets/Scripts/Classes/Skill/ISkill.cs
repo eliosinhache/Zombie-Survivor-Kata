@@ -4,7 +4,7 @@ namespace Classes.Skill
 {
     public interface ISkill
     {
-        LevelEnum RetrieveLevelSkill();
+        LevelEnum GetLevelSkill();
         int MinExperienceNeeded();
         void Unlock();
         bool IsUnlock();

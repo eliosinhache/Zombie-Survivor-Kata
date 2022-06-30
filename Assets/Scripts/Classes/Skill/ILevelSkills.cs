@@ -5,8 +5,8 @@ namespace Classes.Skill
 {
     public interface ILevelSkills
     {
-        LevelEnum RetrieveLevelSkills();
-        int RetrieveCountOfSkills();
+        LevelEnum GetSkillsLevel();
+        int GetSkillsCount();
         void AddNewSkill(ISkill skill);
         void UnlockSkill(ISkill unlockSkill);
         int CountOfUnlockedSkills();

@@ -14,7 +14,7 @@ namespace Classes.Skill
             _lvlToUnlock = levelToUnlock;
             _minExperienceNeeded = minExperienceNeeded;
         }
-        public LevelEnum RetrieveLevelSkill()
+        public LevelEnum GetLevelSkill()
         {
             return _lvlToUnlock;
         }

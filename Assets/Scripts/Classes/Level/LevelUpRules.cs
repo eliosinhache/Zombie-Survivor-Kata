@@ -1,4 +1,7 @@
-﻿namespace Classes.Level
+﻿using System;
+using System.Linq;
+
+namespace Classes.Level
 {
     public class LevelUpRules : ILevelUpRules
     {
@@ -45,19 +48,8 @@
 
         public LevelEnum LevelUp(LevelEnum actualLevel)
         {
-            switch (actualLevel)
-            {
-                case LevelEnum.Blue:
-                    return LevelEnum.Yellow;
-                case LevelEnum.Yellow:
-                    return LevelEnum.Orange;
-                case LevelEnum.Orange:
-                    return LevelEnum.Red;
-                case LevelEnum.Red:
-                    return LevelEnum.Blue;
-                default:
-                    return LevelEnum.Blue;
-            }
+            if (actualLevel == Enum.GetValues(typeof(LevelEnum)).Cast<LevelEnum>().Max()) return Enum.GetValues(typeof(LevelEnum)).Cast<LevelEnum>().Min();
+            return  actualLevel + 1;
         }
 
         public bool CanLevelUp(int experience, LevelEnum actualLevel)
@@ -74,12 +66,5 @@
                     return true;
             }
         }
-    }
-
-    public interface ILevelUpRules
-    {
-        int CountOfSkillsAvailableToUnlock(int experience);
-        LevelEnum LevelUp(LevelEnum actualLevel);
-        bool CanLevelUp(int experience, LevelEnum actualLevel);
     }
 }

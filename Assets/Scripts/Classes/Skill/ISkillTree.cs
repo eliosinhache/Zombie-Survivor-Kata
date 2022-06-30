@@ -11,7 +11,7 @@ namespace Classes.Skill
         void UnlockSkill(ISkill skillToUnlock, int survivorExperience);
         List<ISkill> AvailableSkillsToUnlock(LevelEnum level);
         void AddNewSkill(ISkill skill);
-        int RetrieveSkillsOfLevel(LevelEnum orange);
+        int CountSkillsOfLevel(LevelEnum orange);
         void AddNewLevelSkills(ILevelSkills levelSkills);
         List<ISkill> ListOfUnlockedSkills();
     }
